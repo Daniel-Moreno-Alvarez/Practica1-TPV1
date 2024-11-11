@@ -74,7 +74,6 @@ Collision Koopa::hit(const SDL_Rect& rect, bool fromPlayer)
 		if (coll.rect.y <= actrect.y && coll.rect.w > BlockTam / 8 && coll.rect.h < BlockTam * 3 / 4)
 		{
 			isAlive = false;
-			coll.damages = false;
 		}
 		else {
 			coll.damages = true;

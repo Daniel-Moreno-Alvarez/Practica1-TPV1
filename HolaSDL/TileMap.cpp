@@ -43,7 +43,7 @@ Collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer) {
     Collision coll;
 
     int ini = game->getMapOffset() / BlockTam;
-    int fin = ini + Game::WIN_WIDTH / BlockTam + 5;
+    int fin = ini + Game::WIN_WIDTH / BlockTam + 1;
     for (int i = 0; i < map.size() && !coll; i++) {
         for (int j = ini; j < fin && !coll; j++) {
             if (map[i][j] > 0 && map[i][j] % texture->getNumColumns() < 4) {

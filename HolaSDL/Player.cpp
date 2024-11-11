@@ -21,8 +21,6 @@ void Player::update()
 {
 	dir = dir + gravity;
 
-	bool damage = false;
-
 	pos.setY(pos.getY() + dir.getY());// Comprobación vertical
 	SDL_Rect rectY{ pos.getX(), pos.getY() - texture->getFrameHeight() * auxscale,
 		texture->getFrameWidth() * auxscale, texture->getFrameHeight() * auxscale };
@@ -38,38 +36,20 @@ void Player::update()
 		}
 		dir.setY(0.0f);
 	}
-	if (coll.damages)
-	{
-		damage = true;
-	}
 
 	pos.setX(pos.getX() + dir.getX());// Comprobación horizontal
 	SDL_Rect rectX{ pos.getX(), pos.getY() - texture->getFrameHeight() * auxscale,
 		texture->getFrameWidth() * auxscale, texture->getFrameHeight() * auxscale };
-	coll = game->checkCollision(rectX, true);
-	if (coll) {
+	Collision coll1 = game->checkCollision(rectX, true);
+	if (coll1) {
 		if (dir.getX() > 0)
 		{
-			pos.setX(pos.getX() - coll.rect.w);// empujar hacia izquierda
+			pos.setX(pos.getX() - coll1.rect.w);// empujar hacia izquierda
 		}
 		else {
-			pos.setX(pos.getX() + coll.rect.w);// empujar hacia derecha
+			pos.setX(pos.getX() + coll1.rect.w);// empujar hacia derecha
 		}
 		dir.setX(0.0f);
-	}
-	if (coll.damages)
-	{
-		damage = true;
-	}
-
-	if (damage)
-	{
-		if (actualState == MARIO_ST) {
-			isAlive = false;
-		}
-		else {
-			SetState(MARIO_ST);
-		}
 	}
 
 	// Para que no se salga del mapa
@@ -77,30 +57,53 @@ void Player::update()
 		pos.setX(game->getMapOffset());
 	}
 
+	if ((coll.damages || coll1.damages) && !isInmmune) { // comprobar el daño
+		if (actualState == MARIO_ST) {
+			isAlive = false;
+			lifes--;
+		}
+		else {
+			SetState(MARIO_ST);
+			isInmmune = true;
+		}
+	}
+	else if (coll.isEnemy || coll1.isEnemy) {
+		dir.setY(minijump);
+	}
 	// Comprueba si se ha salido del mapa por abajo
 	if (pos.getY() > Game::WIN_HEIGHT) {
 		isAlive = false;
+	}
+
+	if (isInmmune) { // contador de inmunidad
+		lastTime++;
+		if (lastTime >= inmmuneLimit) {
+			isInmmune = false;
+			lastTime = 0;
+		}
 	}
 }
 
 void Player::render() const
 {
-	SDL_Rect rect{ pos.getX() - game->getMapOffset(), pos.getY() - texture->getFrameHeight() * auxscale,
+	if (!isInmmune || lastTime % 2 == 0) {
+		SDL_Rect rect{ pos.getX() - game->getMapOffset(), pos.getY() - texture->getFrameHeight() * auxscale,
 		 texture->getFrameWidth() * auxscale, texture->getFrameHeight() * auxscale };
 
-	if (!isAlive)
-	{
-		texture->renderFrame(rect, 0, 1);
-	}
-	else if (dir.getX() == 0 && dir.getY() == 0) {
-		texture->renderFrame(rect, 0, 0, orientation);
-	}
-	else if (dir.getY() != 0) {
-		texture->renderFrame(rect, 0, 6, orientation);
-	}
-	else {
-		int x = pos.getX();
-		texture->renderFrame(rect, 0, 2 + x % 3, orientation);
+		if (!isAlive)
+		{
+			texture->renderFrame(rect, 0, 1);
+		}
+		else if (dir.getX() == 0 && dir.getY() == 0) {
+			texture->renderFrame(rect, 0, 0, orientation);
+		}
+		else if (dir.getY() != 0) {
+			texture->renderFrame(rect, 0, 6, orientation);
+		}
+		else {
+			int x = pos.getX();
+			texture->renderFrame(rect, 0, 2 + x % 3, orientation);
+		}
 	}
 }
 

@@ -17,6 +17,8 @@ class Player
 private:
 	const float speed = 8;
 	const float jump = -25;
+	const float minijump = -10;
+	const float inmmuneLimit = 50;
 	Point2D pos = Point2D();
 	Point2D dir = Point2D();
 	SDL_RendererFlip orientation = SDL_FLIP_NONE;
@@ -24,6 +26,8 @@ private:
 	float auxscale;
 	bool onTheGround;
 	bool isAlive = true;
+	bool isInmmune = false;
+	int lastTime = 0;
 	int lifes;
 public:
 	Player(Game* _game, Point2D _pos, int _lifes);
@@ -36,6 +40,7 @@ public:
 
 	Point2D getPosition() const { return pos; }
 	bool IsAlive() { return isAlive; };
+	bool IsInmmune() { return isInmmune; };
 
 };
 

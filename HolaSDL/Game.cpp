@@ -161,11 +161,12 @@ Collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer)
 			return coll;
 		}
 	}
-	if (fromPlayer) {
+	if (fromPlayer && !player->IsInmmune()) {
 		for (Goomba* goomba : *goombas) {
 			coll = goomba->hit(rect, fromPlayer);
 			if (coll) {
 				coll.collides = false; // Para que sea tansolo un trigger
+				coll.isEnemy = true;
 				return coll;
 			}
 		}
@@ -173,6 +174,7 @@ Collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer)
 			coll = koopa->hit(rect, fromPlayer);
 			if (coll) {
 				coll.collides = false; // Para que sea tansolo un trigger
+				coll.isEnemy = true;
 				return coll;
 			}
 		}

@@ -71,10 +71,10 @@ Collision Goomba::hit(const SDL_Rect& rect, bool fromPlayer)
 	SDL_Rect actrect{ pos.getX(), pos.getY() - BlockTam, BlockTam, BlockTam };
 	coll.collides = SDL_IntersectRect(&rect, &actrect, &coll.rect);
 	if (coll && fromPlayer) {
+		//Comprobacion de que la collision ha sido desde arriba
 		if (coll.rect.y <= actrect.y && coll.rect.w > BlockTam / 8 && coll.rect.h < BlockTam * 3 / 4)
 		{
 			isAlive = false;
-			coll.damages = false;
 		}
 		else {
 			coll.damages = true;

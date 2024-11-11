@@ -158,4 +158,5 @@ void Player::restart()
 	isAlive = true;
 	SetState(MARIO_ST);
 	pos = oripos;
+	dir = Point2D();
 }

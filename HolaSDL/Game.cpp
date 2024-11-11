@@ -279,7 +279,7 @@ Game::update()
 		seguir = false;
 	}
 
-	if (player->IsAlive()) {
+	if (player->IsAlive() && player->getLifes() > 0) {
 		player->update();
 	}
 	else {

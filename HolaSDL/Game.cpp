@@ -4,7 +4,7 @@
 
 using namespace std;
 
-// Formato de la especificación de una textura
+// Formato de la especificacion de una textura
 struct TextureSpec
 {
 	const char* name;	// Ruta del archivo
@@ -15,7 +15,7 @@ struct TextureSpec
 // Directorio raíz de los archivos de textura
 const string textureRoot = "../assets/imgs/";
 
-// Especificación de las texturas del juego
+// Especificacion de las texturas del juego
 const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
 	TextureSpec
 	{"background.png", 9, 7},
@@ -42,27 +42,46 @@ Game::Game()
  : seguir(true)
 {
 	// Inicializa la SDL
-	SDL_Init(SDL_INIT_EVERYTHING);
-	window = SDL_CreateWindow("First test with SDL",
-	                          SDL_WINDOWPOS_CENTERED,
-	                          SDL_WINDOWPOS_CENTERED,
-	                          WIN_WIDTH,
-	                          WIN_HEIGHT,
-	                          SDL_WINDOW_SHOWN);
+	try
+	{
+		SDL_Init(SDL_INIT_EVERYTHING);
+		window = SDL_CreateWindow("SUPER MARIO",
+			SDL_WINDOWPOS_CENTERED,
+			SDL_WINDOWPOS_CENTERED,
+			WIN_WIDTH,
+			WIN_HEIGHT,
+			SDL_WINDOW_SHOWN);
 
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	
-	SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255);
+		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+		SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255);
+	}
+	catch (const std::string& error)
+	{
+		SDL_DestroyRenderer(renderer);
+		SDL_DestroyWindow(window);
+		SDL_Quit();
+		throw "Error al cargar SDL";
+	}
 
 	if (window == nullptr || renderer == nullptr)
 		throw "Error cargando SDL"s;
 
 	// Carga las texturas
-	for (int i = 0; i < NUM_TEXTURES; ++i)
-		textures[i] = new Texture(renderer,
-		                          (textureRoot + textureSpec[i].name).c_str(),
-		                          textureSpec[i].numRows,
-								  textureSpec[i].numColumns);
+	for (int i = 0; i < NUM_TEXTURES; ++i) {
+		try {
+			textures[i] = new Texture(renderer,
+				(textureRoot + textureSpec[i].name).c_str(),
+				textureSpec[i].numRows,
+				textureSpec[i].numColumns);
+		}
+		catch (const std::string& error)
+		{
+			throw "Error al cargar la textura " + string(textureSpec[i].name);
+		}
+	}
+
+
 	// Carga los mapas
 	for (int i = 0; i < NUM_MAPS; ++i) {
 		maps[i] = mapsSpec[i];
@@ -117,7 +136,10 @@ Game::~Game()
 
 void Game::loadMap()
 {
-	ifstream file(getMap(WORLD1TXT));
+	try
+	{
+		ifstream file(getMap(WORLD1TXT));
+
 	string line;
 	while (getline(file, line)) {
 		istringstream is(line);
@@ -147,6 +169,11 @@ void Game::loadMap()
 		default:
 			break;
 		}
+	}
+	}
+	catch (const std::string& error)
+	{
+		throw std::string("Error al cargar " + getMap(WORLD1TXT));
 	}
 }
 

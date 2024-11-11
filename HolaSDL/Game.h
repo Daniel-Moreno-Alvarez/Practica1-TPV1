@@ -1,12 +1,10 @@
 #pragma once
 
-// Biblioteca estándar de C++
 #include <array>
 
 // Biblioteca SDL
 #include <SDL.h>
 
-// Nuestras clases
 #include "Texture.h"
 #include "TileMap.h"
 #include "Player.h"

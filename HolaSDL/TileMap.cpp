@@ -2,26 +2,31 @@
 #include "Game.h"
 
 TileMap::TileMap(Game* _game) : game(_game), texture(game->getTexture(Game::BACKGROUND)){
+    try {
+        ifstream file(game->getMap(Game::WORLD1CSV));
+        string line;
 
-    ifstream file(game->getMap(Game::WORLD1CSV));
-    string line;
-
-    while (getline(file, line)) {
-        vector<int> row;
-        stringstream ss(line);
-        string cell;
-        int i = 0; // contador para encontrar el final
-        while (getline(ss, cell, ',')) {
-            row.push_back(stoi(cell));  //Convierte cada valor a entero y lo mete en la fila
-            if (final == NULL && stoi(cell) == 34) // si encuntra la bandera que guarde su posicion en el eje x
-            {
-                final = i;
+        while (getline(file, line)) {
+            vector<int> row;
+            stringstream ss(line);
+            string cell;
+            int i = 0; // contador para encontrar el final
+            while (getline(ss, cell, ',')) {
+                row.push_back(stoi(cell));  //Convierte cada valor a entero y lo mete en la fila
+                if (final == NULL && stoi(cell) == 34) // si encuntra la bandera que guarde su posicion en el eje x
+                {
+                    final = i;
+                }
+                else { i++; }
             }
-            else { i++; }
+            map.push_back(row);  // mete la fila al mapa
         }
-        map.push_back(row);  // mete la fila al mapa
+        file.close();
     }
-    file.close();
+	catch (const std::string& error)
+	{
+		throw "Error al cargar " + game->getMap(Game::WORLD1CSV);
+	}
 }
 
 void TileMap::render() const

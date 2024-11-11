@@ -10,9 +10,14 @@ TileMap::TileMap(Game* _game) : game(_game), texture(game->getTexture(Game::BACK
         vector<int> row;
         stringstream ss(line);
         string cell;
-
+        int i = 0; // contador para encontrar el final
         while (getline(ss, cell, ',')) {
             row.push_back(stoi(cell));  //Convierte cada valor a entero y lo mete en la fila
+            if (final == NULL && stoi(cell) == 34) // si encuntra la bandera que guarde su posicion en el eje x
+            {
+                final = i;
+            }
+            else { i++; }
         }
         map.push_back(row);  // mete la fila al mapa
     }

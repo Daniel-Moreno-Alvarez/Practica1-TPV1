@@ -70,6 +70,7 @@ Game::Game()
 
 	// Crea los objetos del juego
 	level = new TileMap(this);
+	finalX = level->getFinalX() * BlockTam;
 	goombas = new vector<Goomba*>();
 	koopas = new vector<Koopa*>();
 	blocks = new vector<Block*>();
@@ -204,10 +205,7 @@ Game::run()
 		// Marca de tiempo del inicio de la iteración
 		uint32_t inicio = SDL_GetTicks();
 
-		if (player->IsAlive())
-		{
-			update();
-		}      // Actualiza el estado de los objetos del juego
+		update();// Actualiza el estado de los objetos del juego
 		render();       // Dibuja los objetos en la venta
 		handleEvents(); // Maneja los eventos de la SDL
 
@@ -250,12 +248,27 @@ Game::render() const
 void
 Game::update()
 {
-	if(player->getPosition().getX() >= mapOffset - BlockTam + WIN_WIDTH / 2) {
+	if (player->getPosition().getX() >= finalX) { // si llega al final
+		seguir = false;
+	}
+
+	if (player->IsAlive()) {
+		player->update();
+	}
+	else {
+		if (player->getLifes() > 0) {
+			mapOffset = 0;
+			player->restart();
+		}
+		else {
+			seguir = false;
+		}
+	}
+
+	if (player->getPosition().getX() >= mapOffset - BlockTam + WIN_WIDTH / 2) {
 
 		mapOffset += 8;
 	}
-
-	player->update();
 
 	for (auto it = blocks->begin(); it != blocks->end(); ) {
 		Block* block = *it;

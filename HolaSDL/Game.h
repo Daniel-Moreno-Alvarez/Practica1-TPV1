@@ -71,6 +71,8 @@ private:
 	vector<Koopa*>* koopas;
 	vector<Mushroom*>* mushrooms;
 
+	int finalX;
+
 public:
 	void run();
 

@@ -19,7 +19,8 @@ private:
 	const float jump = -25;
 	const float minijump = -10;
 	const float inmmuneLimit = 50;
-	Point2D pos = Point2D();
+	Point2D pos;
+	Point2D oripos;
 	Point2D dir = Point2D();
 	SDL_RendererFlip orientation = SDL_FLIP_NONE;
 	PlayerState actualState;
@@ -36,11 +37,12 @@ public:
 	void render() const;
 	void handleEvent(const SDL_Event& event);
 	void SetState(PlayerState pySt);
+	void restart();
+	
 	PlayerState getState() { return actualState; };
-
 	Point2D getPosition() const { return pos; }
-	bool IsAlive() { return isAlive; };
-	bool IsInmmune() { return isInmmune; };
-
+	int getLifes() const { return lifes; }
+	bool IsAlive() const { return isAlive; };
+	bool IsInmmune() const { return isInmmune; };
 };
 

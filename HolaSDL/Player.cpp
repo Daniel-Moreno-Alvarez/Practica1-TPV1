@@ -6,6 +6,7 @@ constexpr int FRAME_PERIOD = 20;
 Player::Player(Game* _game, Point2D _pos, int _lifes) : game(_game),  pos(_pos), lifes(_lifes)
 {
 	SetState(MARIO_ST);
+	oripos = pos;
 	onTheGround = false;
 }
 
@@ -14,6 +15,7 @@ Player::Player(Game* _game, std::istream& is) : game(_game)
 	SetState(MARIO_ST);
 	is >> pos >> lifes;
 	pos = pos * BlockTam;
+	oripos = pos;
 	onTheGround = false;
 }
 
@@ -60,7 +62,6 @@ void Player::update()
 	if ((coll.damages || coll1.damages) && !isInmmune) { // comprobar el daño
 		if (actualState == MARIO_ST) {
 			isAlive = false;
-			lifes--;
 		}
 		else {
 			SetState(MARIO_ST);
@@ -149,4 +150,12 @@ void Player::SetState(PlayerState pySt)
 	default:
 		break;
 	}
+}
+
+void Player::restart()
+{
+	lifes--;
+	isAlive = true;
+	SetState(MARIO_ST);
+	pos = oripos;
 }

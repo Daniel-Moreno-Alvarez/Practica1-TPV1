@@ -17,7 +17,9 @@ public:
     TileMap(Game* game);
     void render() const;
     Collision hit(const SDL_Rect& rect, bool fromPlayer);
+    int getFinalX() const { return final; }
 private:
     vector<vector<int>> map;
+    int final;
 };
 

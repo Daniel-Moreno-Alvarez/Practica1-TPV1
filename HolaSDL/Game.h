@@ -75,11 +75,12 @@ public:
 	void run();
 
 	void update();
-	void render() const;
+	void render();
 	void handleEvents();
 	void loadMap();
 	Collision checkCollision(const SDL_Rect& rect, bool fromPlayer);
 	void addMushroom(Point2D _pos);
+	void renderLifes();
 
 	// Constante globales
 	static constexpr uint WIN_WIDTH = 576;

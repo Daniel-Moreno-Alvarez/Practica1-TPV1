@@ -224,6 +224,16 @@ void Game::addMushroom(Point2D _pos)
 	mushrooms->push_back(mush);
 }
 
+void Game::renderLifes()
+{
+	int tam = 20;
+	int offset = 5;
+	for (int i = 0; i < player->getLifes(); i++) {
+		SDL_Rect rect = { offset + (tam + offset) * i, offset, tam,tam};
+		getTexture(MARIO)->renderFrame(rect, 0, 0);
+	}
+}
+
 void
 Game::run()
 {
@@ -246,7 +256,7 @@ Game::run()
 }
 
 void
-Game::render() const
+Game::render()
 {
 	SDL_RenderClear(renderer);
 
@@ -268,6 +278,8 @@ Game::render() const
 	for (Mushroom* mush : *mushrooms) {
 		mush->render();
 	}
+
+	renderLifes();
 
 	SDL_RenderPresent(renderer);
 }

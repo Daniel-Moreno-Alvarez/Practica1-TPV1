@@ -1,0 +1,4 @@
+Daniel Moreno Álvarez
+
+Todos los requisitos de entrega completados. 
+Las vidas las he marcado en la esquina superior izquierda con el Sprite de Mario

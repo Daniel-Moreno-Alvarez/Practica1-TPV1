@@ -34,6 +34,10 @@ public:
         return Vector2D(x * other, y * other);
     }
 
+    Vector2D operator+=(const Vector2D& other) const {
+        return Vector2D(x + other.x, y + other.y);
+    }
+
     bool operator==(const Vector2D& other) {
         return x == other.x && y == other.y;
     }

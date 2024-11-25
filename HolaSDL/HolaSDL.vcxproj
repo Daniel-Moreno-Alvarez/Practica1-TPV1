@@ -70,6 +70,7 @@
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameList.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Goomba.cpp" />
     <ClCompile Include="Koopa.cpp" />
@@ -86,7 +87,9 @@
     <ClInclude Include="checkML.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameList.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="gameState.h" />
     <ClInclude Include="Goomba.h" />
     <ClInclude Include="Koopa.h" />
     <ClInclude Include="Mushroom.h" />

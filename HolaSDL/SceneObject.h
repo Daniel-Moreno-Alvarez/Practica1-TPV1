@@ -13,7 +13,7 @@ protected:
 	int height;
 	int width;
 	Texture* texture = nullptr;
-	bool target;
+	bool target = false;
 
 	Collision tryToMove(const Point2D& speed, Collision::Target attack);
 	SDL_Rect getCollisionRect() const;
@@ -23,6 +23,6 @@ public:
 	SceneObject(Game* _game, Point2D _pos, Point2D _vel, int _h, int _w, bool _target) :
 		GameObject(_game), pos(_pos), vel(_vel), height(_h), width(_w), target(_target)
 	{};
-	virtual Collision hit(const SDL_Rect& rect, bool fromPlayer);
+	virtual Collision hit(const SDL_Rect& rect, bool fromPlayer) = 0;
 };
 

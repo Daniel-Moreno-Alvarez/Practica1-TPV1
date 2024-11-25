@@ -20,6 +20,6 @@ public:
     int getFinalX() const { return final; }
 private:
     vector<vector<int>> map;
-    int final;
+    int final = -1;
 };
 

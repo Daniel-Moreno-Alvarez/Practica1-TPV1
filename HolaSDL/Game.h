@@ -97,6 +97,9 @@ public:
 	Texture* getTexture(TextureName name) const;
 	string getMap(MapName name) const;
 
+	// Seters
+	void setPlayerState(PlayerState pySt) { player->SetState(pySt); }
+
 	Game();
 	~Game();
 };

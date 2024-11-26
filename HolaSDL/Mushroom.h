@@ -4,26 +4,17 @@
 #include "Vector2D.h"
 #include "Collision.h"
 #include <istream>
+#include "Pickable.h"
 class Game;
 
-class Mushroom
+class Mushroom : public Pickable
 {
-	Game* game;
-	Texture* texture;
 private:
 	const float speed = 4;
-	Point2D pos;
-	Point2D dir;
-	int frame = 0;
-	int frameTime = 0;
-	const float frameMax = 2;
-	bool isAlive = true;
 public:
 	Mushroom(Game* _game, Point2D _pos);
-	void update();
-	void render() const;
-	Collision hit(const SDL_Rect& rect, bool fromPlayer);
-	bool IsAlive() { return isAlive; };
 
+	void update() override;
+	void triggerAction() override;
 };
 

@@ -81,7 +81,6 @@ Game::Game()
 		}
 	}
 
-
 	// Carga los mapas
 	for (int i = 0; i < NUM_MAPS; ++i) {
 		maps[i] = mapsSpec[i];
@@ -209,7 +208,6 @@ Collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer)
 		for (Mushroom* mush : *mushrooms) {
 			coll = mush->hit(rect, fromPlayer);
 			if (coll) {
-				player->SetState(SUPERMARIO_ST);
 				coll.collides = false; // Para que sea tansolo un trigger
 				return coll;
 			}

@@ -324,12 +324,8 @@ Game::update()
 	for (auto it = goombas->begin(); it != goombas->end(); ) {
 		Goomba* goomba = *it;
 
-		if (goomba->IsAlive() && !goomba->IsFrozen()) {
+		if (goomba->IsAlive()) {
 			goomba->update();
-			++it;
-		}
-		else if (goomba->IsFrozen()) {
-			goomba->defrost();
 			++it;
 		}
 		else {
@@ -340,12 +336,8 @@ Game::update()
 	for (auto it = koopas->begin(); it != koopas->end(); ) {
 		Koopa* koopa = *it;
 
-		if (koopa->IsAlive() && !koopa->IsFrozzen()) {
+		if (koopa->IsAlive()) {
 			koopa->update();
-			++it;
-		}
-		else if (koopa->IsFrozzen()) {
-			koopa->defrost();
 			++it;
 		}
 		else {

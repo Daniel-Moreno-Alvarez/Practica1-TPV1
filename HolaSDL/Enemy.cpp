@@ -12,55 +12,61 @@ Enemy::Enemy(Game* _game, std::istream& is) :
 
 void Enemy::update()
 {
-	vel = vel + gravity;
-
-	pos.setY(pos.getY() + vel.getY());// Comprobación vertical
-	SDL_Rect rectY = getCollisionRect();
-	Collision coll = game->checkCollision(rectY, false);
-	if (coll) {
-		if (vel.getY() > 0)
-		{
-			pos.setY(pos.getY() - coll.rect.h);// empujar hacia arriba
-		}
-		else {
-			pos.setY(pos.getY() + coll.rect.h); // empujar hacia abajo
-		}
-		vel.setY(0.0f);
-	}
-
-	pos.setX(pos.getX() + vel.getX());// Comprobación horizontal
-	SDL_Rect rectX = getCollisionRect();
-	coll = game->checkCollision(rectX, false);
-	if (coll) {
-		if (vel.getX() > 0)
-		{
-			pos.setX(pos.getX() - coll.rect.w);// empujar hacia izquierda
-		}
-		else {
-			pos.setX(pos.getX() + coll.rect.w);// empujar hacia derecha
-		}
-		vel.setX(vel.getX() * -1);
-	}
-
-	//Si se sale del mapa por abajo
-	if (pos.getY() > Game::WIN_HEIGHT || pos.getX() < game->getMapOffset() - BlockTam) {
-		isAlive = false;
-	}
-
-	//actualiza el frame
-	frameTime++;
-	if (frameTime >= 10)
+	if (!frozen)
 	{
-		frame++;
-		if (frame >= frameMax)
-		{
-			frame = 0;
-		}
-		frameTime = 0;
-	}
+		vel = vel + gravity;
 
-	if (pos.getX() < game->getMapOffset() + Game::WIN_WIDTH) {
-		frozen = false;
+		pos.setY(pos.getY() + vel.getY());// Comprobación vertical
+		SDL_Rect rectY = getCollisionRect();
+		Collision coll = game->checkCollision(rectY, false);
+		if (coll) {
+			if (vel.getY() > 0)
+			{
+				pos.setY(pos.getY() - coll.rect.h);// empujar hacia arriba
+			}
+			else {
+				pos.setY(pos.getY() + coll.rect.h); // empujar hacia abajo
+			}
+			vel.setY(0.0f);
+		}
+
+		pos.setX(pos.getX() + vel.getX());// Comprobación horizontal
+		SDL_Rect rectX = getCollisionRect();
+		coll = game->checkCollision(rectX, false);
+		if (coll) {
+			if (vel.getX() > 0)
+			{
+				pos.setX(pos.getX() - coll.rect.w);// empujar hacia izquierda
+			}
+			else {
+				pos.setX(pos.getX() + coll.rect.w);// empujar hacia derecha
+			}
+			vel.setX(vel.getX() * -1);
+		}
+
+		//Si se sale del mapa por abajo
+		if (pos.getY() > Game::WIN_HEIGHT || pos.getX() < game->getMapOffset() - BlockTam) {
+			isAlive = false;
+		}
+
+		//actualiza el frame
+		frameTime++;
+		if (frameTime >= 10)
+		{
+			frame++;
+			if (frame >= frameMax)
+			{
+				frame = 0;
+			}
+			frameTime = 0;
+		}
+
+		if (pos.getX() < game->getMapOffset() + Game::WIN_WIDTH) {
+			frozen = false;
+		}
+	}
+	else {
+		defrost();
 	}
 }
 

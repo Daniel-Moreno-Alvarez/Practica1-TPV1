@@ -3,14 +3,17 @@
 
 constexpr int FRAME_PERIOD = 20;
 
-Player::Player(Game* _game, Point2D _pos, int _lifes) : game(_game),  pos(_pos), lifes(_lifes)
+Player::Player(Game* _game, Point2D _pos, int _lifes) : 
+	SceneObject(_game, _pos, {0,0}, 0, 0, true),
+	lifes(_lifes)
 {
 	SetState(MARIO_ST);
 	oripos = pos;
 	onTheGround = false;
 }
 
-Player::Player(Game* _game, std::istream& is) : game(_game)
+Player::Player(Game* _game, std::istream& is) :
+	SceneObject(_game, {0,0}, {0,0}, 0, 0, true)
 {
 	SetState(MARIO_ST);
 	is >> pos >> lifes;
@@ -21,14 +24,13 @@ Player::Player(Game* _game, std::istream& is) : game(_game)
 
 void Player::update()
 {
-	dir = dir + gravity;
+	vel = vel + gravity;
 
-	pos.setY(pos.getY() + dir.getY());// Comprobación vertical
-	SDL_Rect rectY{ pos.getX(), pos.getY() - texture->getFrameHeight() * auxscale,
-		texture->getFrameWidth() * auxscale, texture->getFrameHeight() * auxscale };
+	pos.setY(pos.getY() + vel.getY());// Comprobación vertical
+	SDL_Rect rectY = getCollisionRect();
 	Collision coll = game->checkCollision(rectY, true);
 	if (coll) {
-		if (dir.getY() > 0)
+		if (vel.getY() > 0)
 		{
 			pos.setY(pos.getY() - coll.rect.h);// empujar hacia arriba
 			onTheGround = true;
@@ -36,22 +38,21 @@ void Player::update()
 		else {
 			pos.setY(pos.getY() + coll.rect.h); // empujar hacia abajo
 		}
-		dir.setY(0.0f);
+		vel.setY(0.0f);
 	}
 
-	pos.setX(pos.getX() + dir.getX());// Comprobación horizontal
-	SDL_Rect rectX{ pos.getX(), pos.getY() - texture->getFrameHeight() * auxscale,
-		texture->getFrameWidth() * auxscale, texture->getFrameHeight() * auxscale };
+	pos.setX(pos.getX() + vel.getX());// Comprobación horizontal
+	SDL_Rect rectX = getCollisionRect();
 	Collision coll1 = game->checkCollision(rectX, true);
 	if (coll1) {
-		if (dir.getX() > 0)
+		if (vel.getX() > 0)
 		{
 			pos.setX(pos.getX() - coll1.rect.w);// empujar hacia izquierda
 		}
 		else {
 			pos.setX(pos.getX() + coll1.rect.w);// empujar hacia derecha
 		}
-		dir.setX(0.0f);
+		vel.setX(0.0f);
 	}
 
 	// Para que no se salga del mapa
@@ -69,7 +70,7 @@ void Player::update()
 		}
 	}
 	else if (coll.isEnemy || coll1.isEnemy) {
-		dir.setY(minijump);
+		vel.setY(minijump);
 	}
 	// Comprueba si se ha salido del mapa por abajo
 	if (pos.getY() > Game::WIN_HEIGHT) {
@@ -88,17 +89,16 @@ void Player::update()
 void Player::render() const
 {
 	if (!isInmmune || lastTime % 2 == 0) {
-		SDL_Rect rect{ pos.getX() - game->getMapOffset(), pos.getY() - texture->getFrameHeight() * auxscale,
-		 texture->getFrameWidth() * auxscale, texture->getFrameHeight() * auxscale };
+		SDL_Rect rect = getRenderRect();
 
 		if (!isAlive)
 		{
 			texture->renderFrame(rect, 0, 1);
 		}
-		else if (dir.getX() == 0 && dir.getY() == 0) {
+		else if (vel.getX() == 0 && vel.getY() == 0) {
 			texture->renderFrame(rect, 0, 0, orientation);
 		}
-		else if (dir.getY() != 0) {
+		else if (vel.getY() != 0) {
 			texture->renderFrame(rect, 0, 6, orientation);
 		}
 		else {
@@ -108,28 +108,33 @@ void Player::render() const
 	}
 }
 
+Collision Player::hit(const SDL_Rect& rect, bool fromPlayer)
+{
+	return Collision();
+}
+
 void Player::handleEvent(const SDL_Event& event)
 {
 	if (event.type == SDL_KEYDOWN) {
 		if (event.key.keysym.sym == SDLK_d) {
-			dir.setX(speed);
+			vel.setX(speed);
 			orientation = SDL_FLIP_NONE;
 		}
 		else if (event.key.keysym.sym == SDLK_a && pos.getX() > game->getMapOffset()) {
-			dir.setX(-speed);
+			vel.setX(-speed);
 			orientation = SDL_FLIP_HORIZONTAL;
 		}
 		else {
-			dir.setX(0);
+			vel.setX(0);
 		}
 
 		if (event.key.keysym.sym == SDLK_SPACE && onTheGround) {
-			dir.setY(jump);
+			vel.setY(jump);
 			onTheGround = false;
 		}
 	}
 	else {
-		dir.setX(0);
+		vel.setX(0);
 	}
 }
 
@@ -140,16 +145,16 @@ void Player::SetState(PlayerState pySt)
 	case MARIO_ST:
 		actualState = MARIO_ST;
 		texture = game->getTexture(Game::MARIO);
-		auxscale = 1;
 		break;
 	case SUPERMARIO_ST:
 		actualState = SUPERMARIO_ST;
 		texture = game->getTexture(Game::SUPERMARIO);
-		auxscale = 2;
 		break;
 	default:
 		break;
 	}
+	height = texture->getFrameHeight() * auxscale;
+	width = texture->getFrameWidth() * auxscale;
 }
 
 void Player::restart()
@@ -158,5 +163,5 @@ void Player::restart()
 	isAlive = true;
 	SetState(MARIO_ST);
 	pos = oripos;
-	dir = Point2D();
+	vel = Point2D();
 }

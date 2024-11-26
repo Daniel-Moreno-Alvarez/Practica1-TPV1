@@ -4,7 +4,7 @@
 
 // Biblioteca SDL
 #include <SDL.h>
-
+#include "GameList.h"
 #include "Texture.h"
 #include "TileMap.h"
 #include "Player.h"
@@ -13,6 +13,7 @@
 #include "Goomba.h"
 #include "Koopa.h"
 #include "Mushroom.h"
+#include "SceneObject.h"
 
 using uint = unsigned int;
 

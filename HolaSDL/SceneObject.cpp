@@ -1,4 +1,5 @@
 #include "SceneObject.h"
+#include "Game.h"
 
 Collision SceneObject::tryToMove(const Point2D& speed, Collision::Target attack) {
 	Collision collision;

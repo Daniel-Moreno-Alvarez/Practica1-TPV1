@@ -10,8 +10,8 @@ public:
 	GameObject(Game* _game) : 
 		game(_game)
 	{};
-	virtual ~GameObject();
+	virtual ~GameObject() = default;
 	virtual void render() const = 0;
-	virtual void updte() = 0;
+	virtual void update() = 0;
 };
 

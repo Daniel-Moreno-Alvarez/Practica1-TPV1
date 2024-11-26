@@ -8,3 +8,8 @@ Koopa::Koopa(Game* _game, std::istream& is) :
 	height = BlockTam;
 	width = BlockTam;
 }
+
+SceneObject* Koopa::clone() const
+{
+	return new Koopa(*this);
+}

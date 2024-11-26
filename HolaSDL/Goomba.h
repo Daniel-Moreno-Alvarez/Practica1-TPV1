@@ -12,5 +12,6 @@ class Goomba : public Enemy
 {
 public:
 	Goomba(Game* _game, std::istream& is);
+	SceneObject* clone() const override;
 };
 

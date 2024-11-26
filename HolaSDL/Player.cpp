@@ -165,3 +165,8 @@ void Player::restart()
 	pos = oripos;
 	vel = Point2D();
 }
+
+SceneObject* Player::clone() const
+{
+	return new Player(*this);
+}

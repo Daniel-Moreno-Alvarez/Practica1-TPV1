@@ -52,3 +52,8 @@ void Mushroom::triggerAction()
 {
 	game->setPlayerState(PlayerState::SUPERMARIO_ST);
 }
+
+SceneObject* Mushroom::clone() const
+{
+	return new Mushroom(*this);
+}

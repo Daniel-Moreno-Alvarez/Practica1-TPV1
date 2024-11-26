@@ -358,6 +358,21 @@ Game::update()
 }
 
 void
+Game::addVisibleObjects()
+{
+	// Borde derecho del mapa (más una casilla)
+	const int rightThreshold = mapOffset + WIN_WIDTH + BlockTam;
+
+	while (nextObject < objectQueue.size() && objectQueue[nextObject]->getPosition().getX() < rightThreshold)
+		addObject(objectQueue[nextObject++]->clone());
+}
+
+void Game::addObject(SceneObject* object)
+{
+	sceneObjects.push_back(object);
+}
+
+void
 Game::handleEvents()
 {
 	// Procesamiento de eventos

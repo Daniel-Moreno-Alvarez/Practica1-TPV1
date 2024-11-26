@@ -66,6 +66,12 @@ private:
 	//offset del mapa
 	int mapOffset = 0;
 	// Objetos del juego
+
+	GameList<SceneObject> sceneObjects;
+
+	std::vector<SceneObject*> objectQueue;
+	int nextObject;
+
 	TileMap* level;
 	Player* player;
 	vector<Block*>* blocks;
@@ -99,6 +105,9 @@ public:
 
 	// Seters
 	void setPlayerState(PlayerState pySt) { player->SetState(pySt); }
+
+	void addVisibleObjects();
+	void addObject(SceneObject* object);
 
 	Game();
 	~Game();

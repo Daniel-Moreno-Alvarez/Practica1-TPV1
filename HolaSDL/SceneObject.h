@@ -4,6 +4,7 @@
 #include "Texture.h"
 #include "Vector2D.h"
 #include "Collision.h"
+#include "GameList.h"
 
 class Game;
 
@@ -23,7 +24,7 @@ protected:
 	SDL_Rect getCollisionRect() const;
 	SDL_Rect getRenderRect() const;
 
-	void SetTexture();
+	GameList<SceneObject>::anchor anchor;
 	
 public:
 	SceneObject(Game* _game, bool _target) :
@@ -35,10 +36,29 @@ public:
 	SceneObject(Game* _game, Point2D _pos, Point2D _vel, int _h, int _w, bool _target) :
 		GameObject(_game), pos(_pos), vel(_vel), height(_h), width(_w), target(_target)
 	{};
+	SceneObject(const SceneObject& other) :
+		GameObject(other.game),
+		pos(other.pos),
+		vel(other.vel),
+		width(other.width),
+		height(other.height),
+		texture(other.texture),
+		isAlive(other.isAlive),
+		frozen(other.frozen)
+	{};
 
 	virtual Collision hit(const SDL_Rect& rect, bool fromPlayer) = 0;
-	
+	virtual SceneObject* clone() const = 0;
+
+	Point2D getPosition() const { return pos; };
 	bool IsAlive() const { return isAlive; };
 	bool IsFrozen() const { return frozen; };
+
+	void setListAnchor(GameList<SceneObject>::anchor&& _anchor) {
+		anchor = std::move(_anchor);
+	}
+	GameList<SceneObject>::anchor& getListAnchor() {
+		return anchor;
+	}
 };
 

@@ -12,5 +12,6 @@ class Koopa : public Enemy
 {
 public:
 	Koopa(Game* _game, std::istream& is);
+	SceneObject* clone() const override;
 };
 

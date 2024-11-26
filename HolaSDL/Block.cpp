@@ -100,3 +100,8 @@ Collision Block::hit(const SDL_Rect& rect, bool fromPlayer) {
 	}
 	return coll;
 }
+
+SceneObject* Block::clone() const
+{
+	return new Block(*this);
+}

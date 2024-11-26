@@ -22,7 +22,6 @@ private:
 	Point2D oripos;
 	SDL_RendererFlip orientation = SDL_FLIP_NONE;
 	PlayerState actualState;
-	float auxscale = 2;
 	bool onTheGround;
 	bool isInmmune = false;
 	int lastTime = 0;
@@ -38,7 +37,8 @@ public:
 	void SetState(PlayerState pySt);
 	void restart();
 	
-	PlayerState getState() { return actualState; };
+	SceneObject* clone() const override;
+	PlayerState getState() const { return actualState; };
 	Point2D getPosition() const { return pos; }
 	int getLifes() const { return lifes; }
 	bool IsInmmune() const { return isInmmune; };

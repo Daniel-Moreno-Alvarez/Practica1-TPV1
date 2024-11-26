@@ -8,3 +8,9 @@ Goomba::Goomba(Game* _game, std::istream& is) :
 	height = BlockTam;
 	width = BlockTam;
 }
+
+SceneObject*
+Goomba::clone() const
+{
+	return new Goomba(*this);
+}

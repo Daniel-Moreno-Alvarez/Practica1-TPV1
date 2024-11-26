@@ -34,5 +34,7 @@ public:
 	void render() const override;
 	void update() override;
 	Collision hit(const SDL_Rect& rect, bool fromPlayer);
+
+	SceneObject* clone()const override;
 };
 

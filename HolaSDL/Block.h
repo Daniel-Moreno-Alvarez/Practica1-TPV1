@@ -4,6 +4,7 @@
 #include "Vector2D.h"
 #include "Collision.h"
 #include <istream>
+#include "SceneObject.h"
 
 class Game;
 
@@ -20,23 +21,18 @@ enum BlockAction {
 	NONE
 };
 
-class Block
+class Block : public SceneObject
 {
-	Game* game;
-	Texture* texture;
 private:
-	Point2D pos;
 	BlockTipe tipe;
 	BlockAction action;
 	int frame = 0;
 	int frameTime = 0;
 	const int frameMax = 4;
-	bool isAlive = true;
 public:
 	Block(Game* _game, std::istream& is);
-	void render() const;
-	void update();
+	void render() const override;
+	void update() override;
 	Collision hit(const SDL_Rect& rect, bool fromPlayer);
-	bool IsAlive() { return isAlive; };
 };
 

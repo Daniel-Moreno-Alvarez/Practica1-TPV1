@@ -17,7 +17,10 @@
 
 using uint = unsigned int;
 
+const float SCALE = 2;
 const float BlockTam = 32;
+const float BlockTam2 = BlockTam / 2;
+const float BlockTam4 = BlockTam / 4;
 const Point2D gravity = Point2D(0, 2);
 //
 // Clase que representa el juego y controla todos sus aspectos

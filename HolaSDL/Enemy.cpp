@@ -1,44 +1,45 @@
-#include "Koopa.h"
+#include "Enemy.h"
 #include "Game.h"
 
-Koopa::Koopa(Game* _game, std::istream& is) : game(_game)
+Enemy::Enemy(Game* _game, std::istream& is) :
+	SceneObject(_game, false)
 {
-	texture = game->getTexture(Game::KOOPA);
 	is >> pos;
 	pos = pos * BlockTam;
-	dir = Point2D(-speed, 0);
+	vel = Point2D(-speed, 0);
+	frozen = true;
 }
 
-void Koopa::update()
+void Enemy::update()
 {
-	dir = dir + gravity;
+	vel = vel + gravity;
 
-	pos.setY(pos.getY() + dir.getY());// Comprobación vertical
-	SDL_Rect rectY{ pos.getX(), pos.getY() - BlockTam * auxscale, BlockTam, BlockTam * auxscale };
+	pos.setY(pos.getY() + vel.getY());// Comprobación vertical
+	SDL_Rect rectY = getCollisionRect();
 	Collision coll = game->checkCollision(rectY, false);
 	if (coll) {
-		if (dir.getY() > 0)
+		if (vel.getY() > 0)
 		{
 			pos.setY(pos.getY() - coll.rect.h);// empujar hacia arriba
 		}
 		else {
 			pos.setY(pos.getY() + coll.rect.h); // empujar hacia abajo
 		}
-		dir.setY(0.0f);
+		vel.setY(0.0f);
 	}
 
-	pos.setX(pos.getX() + dir.getX());// Comprobación horizontal
-	SDL_Rect rectX{ pos.getX(), pos.getY() - BlockTam * auxscale, BlockTam, BlockTam * auxscale };
+	pos.setX(pos.getX() + vel.getX());// Comprobación horizontal
+	SDL_Rect rectX = getCollisionRect();
 	coll = game->checkCollision(rectX, false);
 	if (coll) {
-		if (dir.getX() > 0)
+		if (vel.getX() > 0)
 		{
 			pos.setX(pos.getX() - coll.rect.w);// empujar hacia izquierda
 		}
 		else {
 			pos.setX(pos.getX() + coll.rect.w);// empujar hacia derecha
 		}
-		dir.setX(dir.getX() * -1);
+		vel.setX(vel.getX() * -1);
 	}
 
 	//Si se sale del mapa por abajo
@@ -57,21 +58,25 @@ void Koopa::update()
 		}
 		frameTime = 0;
 	}
+
+	if (pos.getX() < game->getMapOffset() + Game::WIN_WIDTH) {
+		frozen = false;
+	}
 }
 
-void Koopa::render() const
+void Enemy::render() const
 {
-	SDL_Rect rect = { pos.getX() - game->getMapOffset(), pos.getY() - BlockTam * auxscale, BlockTam, BlockTam * auxscale };
+	SDL_Rect rect = getRenderRect();
 	texture->renderFrame(rect, 0, frame);
 }
 
-Collision Koopa::hit(const SDL_Rect& rect, bool fromPlayer)
+Collision Enemy::hit(const SDL_Rect& rect, bool fromPlayer)
 {
 	Collision coll;
 	SDL_Rect actrect{ pos.getX(), pos.getY() - BlockTam, BlockTam, BlockTam };
 	coll.collides = SDL_IntersectRect(&rect, &actrect, &coll.rect);
 	if (coll && fromPlayer) {
-
+		//Comprobacion de que la collision ha sido desde arriba
 		if (coll.rect.y <= actrect.y && coll.rect.w > BlockTam / 8 && coll.rect.h < BlockTam * 3 / 4)
 		{
 			isAlive = false;
@@ -84,7 +89,7 @@ Collision Koopa::hit(const SDL_Rect& rect, bool fromPlayer)
 	return coll;
 }
 
-void Koopa::defrost()
+void Enemy::defrost()
 {
 	if (pos.getX() < game->getMapOffset() + Game::WIN_WIDTH) {
 		frozen = false;

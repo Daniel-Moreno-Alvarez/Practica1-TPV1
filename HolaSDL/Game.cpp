@@ -324,11 +324,11 @@ Game::update()
 	for (auto it = goombas->begin(); it != goombas->end(); ) {
 		Goomba* goomba = *it;
 
-		if (goomba->IsAlive() && !goomba->IsFrozzen()) {
+		if (goomba->IsAlive() && !goomba->IsFrozen()) {
 			goomba->update();
 			++it;
 		}
-		else if (goomba->IsFrozzen()) {
+		else if (goomba->IsFrozen()) {
 			goomba->defrost();
 			++it;
 		}

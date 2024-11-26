@@ -17,7 +17,7 @@ protected:
 	Texture* texture = nullptr;
 	bool target = false;
 	bool isAlive = true;
-
+	bool frozen = false;
 	Collision tryToMove(const Point2D& speed, Collision::Target attack);
 	SDL_Rect getCollisionRect() const;
 	SDL_Rect getRenderRect() const;
@@ -33,5 +33,6 @@ public:
 	virtual Collision hit(const SDL_Rect& rect, bool fromPlayer) = 0;
 	
 	bool IsAlive() const { return isAlive; };
+	bool IsFrozen() const { return frozen; };
 };
 

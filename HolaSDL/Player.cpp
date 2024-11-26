@@ -153,8 +153,8 @@ void Player::SetState(PlayerState pySt)
 	default:
 		break;
 	}
-	height = texture->getFrameHeight() * auxscale;
-	width = texture->getFrameWidth() * auxscale;
+	height = texture->getFrameHeight() * SCALE;
+	width = texture->getFrameWidth() * SCALE;
 }
 
 void Player::restart()

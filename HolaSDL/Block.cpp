@@ -7,8 +7,9 @@ Block::Block(Game* _game, std::istream& is) :
 	texture = game->getTexture(Game::BLOCKS);
 	char _tipe;
 	is >> pos >> _tipe;
-	pos.setY(pos.getY() - 1);
 	pos = pos * BlockTam;
+	height = BlockTam;
+	width = BlockTam;
 
 	char _action = ' ';
 
@@ -46,12 +47,12 @@ Block::Block(Game* _game, std::istream& is) :
 
 void Block::render() const
 {
-	SDL_Rect rect{ pos.getX() - game->getMapOffset(), pos.getY(), BlockTam, BlockTam };
+	SDL_Rect rect = getRenderRect();
 
 	switch (tipe)
 	{
 	case BRICK:
-		texture->renderFrame(rect, 0, 5);
+		texture->renderFrame(rect, 0, 7);
 		break;
 	case SURPRISE:
 		texture->renderFrame(rect, 0, frame);
@@ -85,8 +86,13 @@ void Block::update()
 
 Collision Block::hit(const SDL_Rect& rect, bool fromPlayer) {
 	Collision coll;
-	SDL_Rect actrect {pos.getX(), pos.getY(), BlockTam, BlockTam};
+	SDL_Rect actrect = getCollisionRect();
 	coll.collides = SDL_IntersectRect(&rect, &actrect, &coll.rect);
+	if (coll)
+	{
+		coll.horizontal = coll.rect.w;
+		coll.vertical = coll.rect.h;
+	}
 	if (coll && fromPlayer && coll.rect.y > actrect.y + BlockTam / 4 && coll.rect.w > BlockTam / 4) { // colision por abajo
 		if (tipe == SURPRISE || tipe == HIDDEN) {
 			tipe = VOID;

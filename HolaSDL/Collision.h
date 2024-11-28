@@ -4,7 +4,7 @@ struct Collision {
 	bool collides = false;
 	bool damages = false;
 	bool isEnemy = false;
-	SDL_Rect rect;
+	SDL_Rect rect = { 0,0,0,0 };
 
 	operator bool() const { return collides; }
 

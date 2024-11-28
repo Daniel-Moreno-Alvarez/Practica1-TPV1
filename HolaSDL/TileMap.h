@@ -14,6 +14,7 @@ class TileMap {
     Game* game;
     Texture* texture;
 public:
+    const int validColums = 4;
     TileMap(Game* game);
     void render() const;
     Collision hit(const SDL_Rect& rect, bool fromPlayer);

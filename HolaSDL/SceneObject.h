@@ -19,14 +19,9 @@ protected:
 	bool target = false;
 	bool isAlive = true;
 	bool frozen = false;
-
-	Collision tryToMove(const Point2D& speed, Collision::Target attack);
-	SDL_Rect getCollisionRect() const;
-	SDL_Rect getRenderRect() const;
-
-	GameList<SceneObject>::anchor anchor;
 	
 public:
+
 	SceneObject(Game* _game, bool _target) :
 		GameObject(_game), pos(Point2D()), vel(Point2D()), height(0), width(0), target(_target)
 	{};
@@ -54,6 +49,11 @@ public:
 	bool IsAlive() const { return isAlive; };
 	bool IsFrozen() const { return frozen; };
 
+	Collision tryToMove(const Point2D& speed, Collision::Target attack);
+	SDL_Rect getCollisionRect() const;
+	SDL_Rect getRenderRect() const;
+
+	GameList<SceneObject>::anchor anchor;
 	void setListAnchor(GameList<SceneObject>::anchor&& _anchor) {
 		anchor = std::move(_anchor);
 	}

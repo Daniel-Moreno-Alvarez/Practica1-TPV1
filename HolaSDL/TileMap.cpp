@@ -56,11 +56,17 @@ Collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer) {
     int fin = ini + Game::WIN_WIDTH / BlockTam + 1;
     for (int i = 0; i < map.size() && !coll; i++) {
         for (int j = ini; j < fin && !coll; j++) {
-            if (map[i][j] > 0 && map[i][j] % texture->getNumColumns() < 4) {
+            if (map[i][j] > 0 && map[i][j] % texture->getNumColumns() < validColums) {
                 SDL_Rect actrect{ j * BlockTam, i * BlockTam, BlockTam, BlockTam };
-                coll.collides = SDL_IntersectRect(&rect, &actrect, &coll.rect);
-                if (coll) {
-                    coll.collides = true;
+                if (SDL_HasIntersection(&rect, &actrect)) {
+                    SDL_Rect intersection;
+                    if (SDL_IntersectRect(&rect, &actrect, &intersection)) {
+                        coll.rect = intersection;
+                        coll.collides = true;
+                        coll.horizontal = intersection.w;
+                        coll.vertical = intersection.h;
+                        return coll;
+                    }
                 }
             }
         }

@@ -26,33 +26,14 @@ void Player::update()
 {
 	vel = vel + gravity;
 
-	pos.setY(pos.getY() + vel.getY());// Comprobación vertical
-	SDL_Rect rectY = getCollisionRect();
-	Collision coll = game->checkCollision(rectY, true);
-	if (coll) {
-		if (vel.getY() > 0)
-		{
-			pos.setY(pos.getY() - coll.rect.h);// empujar hacia arriba
-			onTheGround = true;
-		}
-		else {
-			pos.setY(pos.getY() + coll.rect.h); // empujar hacia abajo
-		}
-		vel.setY(0.0f);
-	}
+	Collision coll = tryToMove(vel, Collision::ENEMIES);
 
-	pos.setX(pos.getX() + vel.getX());// Comprobación horizontal
-	SDL_Rect rectX = getCollisionRect();
-	Collision coll1 = game->checkCollision(rectX, true);
-	if (coll1) {
-		if (vel.getX() > 0)
-		{
-			pos.setX(pos.getX() - coll1.rect.w);// empujar hacia izquierda
-		}
-		else {
-			pos.setX(pos.getX() + coll1.rect.w);// empujar hacia derecha
-		}
-		vel.setX(0.0f);
+	if (coll.horizontal) {
+		vel.setX(0);
+	}
+	if (coll.vertical) {
+		onTheGround = vel.getY() > 0;
+		vel.setY(0);
 	}
 
 	// Para que no se salga del mapa
@@ -60,7 +41,7 @@ void Player::update()
 		pos.setX(game->getMapOffset());
 	}
 
-	if ((coll.damages || coll1.damages) && !isInmmune) { // comprobar el daño
+	if ((coll.damages) && !isInmmune) { // comprobar el daño
 		if (actualState == MARIO_ST) {
 			isAlive = false;
 		}
@@ -69,7 +50,7 @@ void Player::update()
 			isInmmune = true;
 		}
 	}
-	else if (coll.isEnemy || coll1.isEnemy) {
+	else if (coll.isEnemy) {
 		vel.setY(minijump);
 	}
 	// Comprueba si se ha salido del mapa por abajo

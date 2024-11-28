@@ -13,7 +13,7 @@ Collision SceneObject::tryToMove(const Point2D& speed, Collision::Target attack)
 
 		// Cantidad que se ha entrado en el obstáculo (lo que hay que deshacer)
 		int fix = collision.vertical * (speed.getY() > 0 ? 1 : -1);
-		pos += {0, speed.getY() - fix};
+		pos.setY(pos.getY() + speed.getY() - fix);
 
 		// Obs: a ? b : c es el operador ternario: vale b si a es cierto y c en caso contrario
 
@@ -35,7 +35,8 @@ Collision SceneObject::tryToMove(const Point2D& speed, Collision::Target attack)
 		if (partial.result == Collision::DAMAGE)
 			collision.result = Collision::DAMAGE;
 
-		pos += {speed.getX() - collision.horizontal * (speed.getX() > 0 ? 1 : -1), 0};
+		float x = speed.getX() - collision.horizontal * (speed.getX() > 0 ? 1 : -1);
+		pos.setX(pos.getX() + x);
 	}
 
 	return collision;

@@ -84,7 +84,7 @@ void Block::update()
 	}
 }
 
-Collision Block::hit(const SDL_Rect& rect, bool fromPlayer) {
+Collision Block::hit(const SDL_Rect& rect, Collision::Target target) {
 	Collision coll;
 	SDL_Rect actrect = getCollisionRect();
 	coll.collides = SDL_IntersectRect(&rect, &actrect, &coll.rect);
@@ -93,7 +93,7 @@ Collision Block::hit(const SDL_Rect& rect, bool fromPlayer) {
 		coll.horizontal = coll.rect.w;
 		coll.vertical = coll.rect.h;
 	}
-	if (coll && fromPlayer && coll.rect.y > actrect.y + BlockTam / 4 && coll.rect.w > BlockTam / 4) { // colision por abajo
+	if (coll && coll.rect.y > actrect.y + BlockTam / 4 && coll.rect.w > BlockTam / 4) { // colision por abajo
 		if (tipe == SURPRISE || tipe == HIDDEN) {
 			tipe = VOID;
 			if (action == POWERUP) {

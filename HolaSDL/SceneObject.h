@@ -42,7 +42,7 @@ public:
 		frozen(other.frozen)
 	{};
 
-	virtual Collision hit(const SDL_Rect& rect, bool fromPlayer) = 0;
+	virtual Collision hit(const SDL_Rect& rect, Collision::Target target) { return NO_COLLISION; };
 	virtual SceneObject* clone() const = 0;
 
 	Point2D getPosition() const { return pos; };

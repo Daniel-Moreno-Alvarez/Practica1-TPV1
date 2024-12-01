@@ -20,7 +20,7 @@ public:
 
 	void update() override;
 	void render() const override;
-	Collision hit(const SDL_Rect& rect, bool fromPlayer) override;
+	Collision hit(const SDL_Rect& rect, Collision::Target target) override;
 
 	void defrost();
 };

@@ -59,19 +59,22 @@ void Enemy::render() const
 	texture->renderFrame(rect, 0, frame);
 }
 
-Collision Enemy::hit(const SDL_Rect& rect, bool fromPlayer)
+Collision Enemy::hit(const SDL_Rect& rect, Collision::Target target)
 {
 	Collision coll;
-	SDL_Rect actrect{ pos.getX(), pos.getY() - BlockTam, BlockTam, BlockTam };
+	SDL_Rect actrect = getCollisionRect();
 	coll.collides = SDL_IntersectRect(&rect, &actrect, &coll.rect);
-	if (coll && fromPlayer) {
-		//Comprobacion de que la collision ha sido desde arriba
-		if (coll.rect.y <= actrect.y && coll.rect.w > BlockTam / 8 && coll.rect.h < BlockTam * 3 / 4)
+	if (coll) {
+		if (target == Collision::ENEMIES)
 		{
-			isAlive = false;
-		}
-		else {
-			coll.damages = true;
+			//Comprobacion de que la collision ha sido desde arriba
+			if (coll.rect.y <= actrect.y && coll.rect.w > BlockTam / 8 && coll.rect.h < BlockTam * 3 / 4)
+			{
+				isAlive = false;
+			}
+			else {
+				coll.damages = true;
+			}
 		}
 	}
 

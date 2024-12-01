@@ -33,7 +33,7 @@ public:
 	Block(Game* _game, std::istream& is);
 	void render() const override;
 	void update() override;
-	Collision hit(const SDL_Rect& rect, bool fromPlayer);
+	Collision hit(const SDL_Rect& rect, Collision::Target target) override;
 
 	SceneObject* clone()const override;
 };

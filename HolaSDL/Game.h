@@ -93,7 +93,7 @@ public:
 	void render();
 	void handleEvents();
 	void loadMap();
-	Collision checkCollision(const SDL_Rect& rect, bool fromPlayer);
+	Collision checkCollision(const SDL_Rect& rect, Collision::Target target);
 	void addMushroom(Point2D _pos);
 	void renderLifes();
 

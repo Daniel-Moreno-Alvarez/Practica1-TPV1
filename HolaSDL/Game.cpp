@@ -158,16 +158,19 @@ void Game::loadMap()
 		case 'B': {
 			Block* block = new Block(this, is);
 			blocks->push_back(block);
+			objectQueue.push_back(block);
 			break;
 		}
 		case 'G': {
 			Goomba* goomba = new Goomba(this, is);
 			goombas->push_back(goomba);
+			objectQueue.push_back(goomba);
 			break;
 		}
 		case 'K': {
 			Koopa* koopa = new Koopa(this, is);
 			koopas->push_back(koopa);
+			objectQueue.push_back(koopa);
 			break;
 		}
 		default:
@@ -181,45 +184,23 @@ void Game::loadMap()
 	}
 }
 
-Collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer)
+Collision Game::checkCollision(const SDL_Rect& rect, Collision::Target target)
 {
 	Collision coll;
-	if (fromPlayer && !player->IsInmmune()) {
-		for (Goomba* goomba : *goombas) {
-			coll = goomba->hit(rect, fromPlayer);
+	for (auto obj : sceneObjects) {
+		if (true)
+		{
+			coll = obj->hit(rect, target);
 			if (coll) {
-				coll.collides = false; // Para que sea tansolo un trigger
-				coll.isEnemy = true;
-				return coll;
-			}
-		}
-		for (Koopa* koopa : *koopas) {
-			coll = koopa->hit(rect, fromPlayer);
-			if (coll) {
-				coll.collides = false; // Para que sea tansolo un trigger
-				coll.isEnemy = true;
-				return coll;
-			}
-		}
-		for (Mushroom* mush : *mushrooms) {
-			coll = mush->hit(rect, fromPlayer);
-			if (coll) {
-				coll.collides = false; // Para que sea tansolo un trigger
 				return coll;
 			}
 		}
 	}
-	coll = tilemap->hit(rect, fromPlayer);
+	coll = tilemap->hit(rect, target);
 	if (coll) {
 		return coll;
 	}
-	for (Block* block : *blocks) {
-		coll = block->hit(rect, fromPlayer);
-		if (coll) {
-			return coll;
-		}
-	}
-	return coll;
+	return NO_COLLISION;
 }
 
 void Game::addMushroom(Point2D _pos)
@@ -267,16 +248,8 @@ Game::render()
 	tilemap->render();
 	player->render();
 
-	for (Block* block : *blocks) {
-		block->render();
-	}
-
-	for (Goomba* goomba : *goombas) {
-		goomba->render();
-	}
-
-	for (Koopa* koopa : *koopas) {
-		koopa->render();
+	for (auto obj : sceneObjects) {
+		obj->render();
 	}
 
 	for (Mushroom* mush : *mushrooms) {
@@ -313,42 +286,11 @@ Game::update()
 		mapOffset += 8;
 	}
 
-	for (auto it = blocks->begin(); it != blocks->end(); ) {
-		Block* block = *it;
-
-		if (block->IsAlive()) {
-			block->update();
-			++it;
-		}
-		else {
-			delete block;
-			it = blocks->erase(it);
-		}
+	for (auto obj : sceneObjects)
+	{
+		obj->update();
 	}
-	for (auto it = goombas->begin(); it != goombas->end(); ) {
-		Goomba* goomba = *it;
 
-		if (goomba->IsAlive()) {
-			goomba->update();
-			++it;
-		}
-		else {
-			delete goomba;
-			it = goombas->erase(it);
-		}
-	}
-	for (auto it = koopas->begin(); it != koopas->end(); ) {
-		Koopa* koopa = *it;
-
-		if (koopa->IsAlive()) {
-			koopa->update();
-			++it;
-		}
-		else {
-			delete koopa;
-			it = koopas->erase(it);
-		}
-	}
 	for (auto it = mushrooms->begin(); it != mushrooms->end(); ) {
 		Mushroom* Mush = *it;
 
@@ -361,6 +303,7 @@ Game::update()
 			it = mushrooms->erase(it);
 		}
 	}
+	addVisibleObjects();
 }
 
 void

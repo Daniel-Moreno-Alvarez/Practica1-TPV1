@@ -9,7 +9,7 @@ Collision SceneObject::tryToMove(const Point2D& speed, Collision::Target attack)
 	if (speed.getY() != 0) {
 		rect.y += speed.getY();
 
-		collision = game->checkCollision(rect, target);
+		collision = game->checkCollision(rect, attack);
 
 		// Cantidad que se ha entrado en el obstáculo (lo que hay que deshacer)
 		int fix = collision.vertical * (speed.getY() > 0 ? 1 : -1);
@@ -27,7 +27,7 @@ Collision SceneObject::tryToMove(const Point2D& speed, Collision::Target attack)
 	if (speed.getX() != 0) {
 		rect.x += speed.getX();
 
-		Collision partial = game->checkCollision(rect, target);
+		Collision partial = game->checkCollision(rect, attack);
 
 		// Copia la información de esta colisión a la que se devolverá
 		collision.horizontal = partial.horizontal;

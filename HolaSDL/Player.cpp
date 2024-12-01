@@ -89,11 +89,6 @@ void Player::render() const
 	}
 }
 
-Collision Player::hit(const SDL_Rect& rect, bool fromPlayer)
-{
-	return Collision();
-}
-
 void Player::handleEvent(const SDL_Event& event)
 {
 	if (event.type == SDL_KEYDOWN) {

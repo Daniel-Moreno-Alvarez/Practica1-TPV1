@@ -32,7 +32,6 @@ public:
 
 	void update() override;
 	void render() const override;
-	Collision hit(const SDL_Rect& rect, bool fromPlayer);
 	void handleEvent(const SDL_Event& event);
 	void SetState(PlayerState pySt);
 	void restart();

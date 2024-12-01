@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL.h>
+
 struct Collision {
 	bool collides = false;
 	bool damages = false;
@@ -28,3 +29,5 @@ struct Collision {
 	int horizontal = 0;   // profundidad de la colisión horizontal
 	int vertical = 0;     // profundidad de la colisión vertical
 };
+
+const Collision NO_COLLISION = Collision();

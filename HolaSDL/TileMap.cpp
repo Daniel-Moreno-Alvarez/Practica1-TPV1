@@ -1,9 +1,12 @@
 #include "TileMap.h"
 #include "Game.h"
 
-TileMap::TileMap(Game* _game) : game(_game), texture(game->getTexture(Game::BACKGROUND)){
+TileMap::TileMap(Game* _game, unsigned int _level) : game(_game), level(_level) {
     try {
-        ifstream file(game->getMap(Game::WORLD1CSV));
+        texture = game->getTexture(Game::BACKGROUND);
+
+        string i = to_string(level);
+        ifstream file("../assets/maps/world" + i + ".csv");
         string line;
 
         while (getline(file, line)) {

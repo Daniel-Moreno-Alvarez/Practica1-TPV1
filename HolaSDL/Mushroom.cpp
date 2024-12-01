@@ -7,7 +7,7 @@ Mushroom::Mushroom(Game* _game, Point2D _pos) :
 	texture = game->getTexture(Game::MUSHROOM);
 	height = BlockTam;
 	width = BlockTam;
-	vel = Point2D(speed, 0);
+	vel = Point2D(-speed, 0);
 }
 
 void Mushroom::update()

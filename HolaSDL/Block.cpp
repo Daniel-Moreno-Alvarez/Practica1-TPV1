@@ -52,7 +52,7 @@ void Block::render() const
 	switch (tipe)
 	{
 	case BRICK:
-		texture->renderFrame(rect, 0, 7);
+		texture->renderFrame(rect, 0, 5);
 		break;
 	case SURPRISE:
 		texture->renderFrame(rect, 0, frame);

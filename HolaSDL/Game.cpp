@@ -36,6 +36,8 @@ const array<std::string, Game::NUM_MAPS> mapsSpec
 {
 	"../assets/maps/world1.csv",
 	"../assets/maps/world1.txt",
+	"../assets/maps/world2.csv",
+	"../assets/maps/world2.txt",
 };
 
 Game::Game()
@@ -53,8 +55,6 @@ Game::Game()
 			SDL_WINDOW_SHOWN);
 
 		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-		SDL_SetRenderDrawColor(renderer, 138, 132, 255, 255);
 	}
 	catch (const std::string& error)
 	{
@@ -87,8 +87,8 @@ Game::Game()
 	}
 
 	// Crea los objetos del juego
-	level = new TileMap(this);
-	finalX = level->getFinalX() * BlockTam;
+	tilemap = new TileMap(this, level);
+	finalX = tilemap->getFinalX() * BlockTam;
 	goombas = new vector<Goomba*>();
 	koopas = new vector<Koopa*>();
 	blocks = new vector<Block*>();
@@ -99,7 +99,7 @@ Game::Game()
 Game::~Game()
 {
 	// Elimina los objetos del juego
-	delete level;
+	delete tilemap;
 	delete player;
 
 	for (Block* block : *blocks) {
@@ -137,9 +137,14 @@ void Game::loadMap()
 {
 	try
 	{
-		ifstream file(getMap(WORLD1TXT));
+		string i = to_string(level);
+		ifstream file("../assets/maps/world" + i + ".txt");
 
 	string line;
+	getline(file, line);
+	istringstream is(line);
+	is >> r >> g >> b;
+	SDL_SetRenderDrawColor(renderer, r, g, b, 255);
 	while (getline(file, line)) {
 		istringstream is(line);
 		char type;
@@ -178,16 +183,7 @@ void Game::loadMap()
 
 Collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer)
 {
-	Collision coll = level->hit(rect, fromPlayer);
-	if (coll) {
-		return coll;
-	}
-	for (Block* block : *blocks) {
-		coll = block->hit(rect, fromPlayer);
-		if (coll) {
-			return coll;
-		}
-	}
+	Collision coll;
 	if (fromPlayer && !player->IsInmmune()) {
 		for (Goomba* goomba : *goombas) {
 			coll = goomba->hit(rect, fromPlayer);
@@ -211,6 +207,16 @@ Collision Game::checkCollision(const SDL_Rect& rect, bool fromPlayer)
 				coll.collides = false; // Para que sea tansolo un trigger
 				return coll;
 			}
+		}
+	}
+	coll = tilemap->hit(rect, fromPlayer);
+	if (coll) {
+		return coll;
+	}
+	for (Block* block : *blocks) {
+		coll = block->hit(rect, fromPlayer);
+		if (coll) {
+			return coll;
 		}
 	}
 	return coll;
@@ -258,7 +264,7 @@ Game::render()
 {
 	SDL_RenderClear(renderer);
 
-	level->render();
+	tilemap->render();
 	player->render();
 
 	for (Block* block : *blocks) {

@@ -49,6 +49,8 @@ public:
 	enum MapName {
 		WORLD1CSV,
 		WORLD1TXT,
+		WORLD2CSV,
+		WORLD2TXT,
 		NUM_MAPS,  // Truco C++: número de texturas definidas
 	};
 
@@ -72,7 +74,10 @@ private:
 	std::vector<SceneObject*> objectQueue;
 	int nextObject;
 
-	TileMap* level;
+	int r, g, b;
+
+	unsigned int level = 2;
+	TileMap* tilemap;
 	Player* player;
 	vector<Block*>* blocks;
 	vector<Goomba*>* goombas;

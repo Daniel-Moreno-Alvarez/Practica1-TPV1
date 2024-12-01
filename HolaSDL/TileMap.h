@@ -15,12 +15,13 @@ class TileMap {
     Texture* texture;
 public:
     const int validColums = 4;
-    TileMap(Game* game);
+    TileMap(Game* game, unsigned int _level);
     void render() const;
     Collision hit(const SDL_Rect& rect, bool fromPlayer);
     int getFinalX() const { return final; }
 private:
     vector<vector<int>> map;
+    unsigned int level;
     int final = -1;
 };
 

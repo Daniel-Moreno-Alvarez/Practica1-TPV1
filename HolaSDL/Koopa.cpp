@@ -5,7 +5,7 @@ Koopa::Koopa(Game* _game, std::istream& is) :
 	Enemy(_game, is)
 {
 	texture = game->getTexture(Game::KOOPA);
-	height = BlockTam;
+	height = BlockTam * SCALE;
 	width = BlockTam;
 }
 

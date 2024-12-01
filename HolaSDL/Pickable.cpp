@@ -15,7 +15,7 @@ void Pickable::render() const
 Collision Pickable::hit(const SDL_Rect& rect, bool fromPlayer)
 {
 	Collision coll;
-	SDL_Rect actrect{ pos.getX(), pos.getY() - BlockTam, BlockTam, BlockTam };
+	SDL_Rect actrect = getCollisionRect();
 	coll.collides = SDL_IntersectRect(&rect, &actrect, &coll.rect);
 	if (coll && fromPlayer) {
 		isAlive = false;

@@ -20,9 +20,8 @@ private:
 	const float minijump = -10;
 	const float inmmuneLimit = 50;
 	Point2D oripos;
-	SDL_RendererFlip orientation = SDL_FLIP_NONE;
 	PlayerState actualState;
-	bool onTheGround;
+	bool onTheGround = false;
 	bool isInmmune = false;
 	int lastTime = 0;
 	int lifes;

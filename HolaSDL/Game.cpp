@@ -30,14 +30,7 @@ const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
 	{"shell.png", 2, 1},
 	{"star.png", 4, 1},
 	{"supermario.png", 22, 1},
-};
-
-const array<std::string, Game::NUM_MAPS> mapsSpec
-{
-	"../assets/maps/world1.csv",
-	"../assets/maps/world1.txt",
-	"../assets/maps/world2.csv",
-	"../assets/maps/world2.txt",
+	{"coin.png", 4, 1},
 };
 
 Game::Game()
@@ -81,18 +74,9 @@ Game::Game()
 		}
 	}
 
-	// Carga los mapas
-	for (int i = 0; i < NUM_MAPS; ++i) {
-		maps[i] = mapsSpec[i];
-	}
-
 	// Crea los objetos del juego
 	tilemap = new TileMap(this, level);
 	finalX = tilemap->getFinalX() * BlockTam;
-	goombas = new vector<Goomba*>();
-	koopas = new vector<Koopa*>();
-	blocks = new vector<Block*>();
-	mushrooms = new vector<Mushroom*>();
 	loadMap();
 }
 
@@ -102,25 +86,15 @@ Game::~Game()
 	delete tilemap;
 	delete player;
 
-	for (Block* block : *blocks) {
-		delete block;
+	for (auto obj : sceneObjects)
+	{
+		delete obj;
 	}
-	delete blocks;
 
-	for (Goomba* goomba : *goombas) {
-		delete goomba;
+	for (auto obj : objectQueue)
+	{
+		delete obj;
 	}
-	delete goombas;
-
-	for (Koopa* koopa : *koopas) {
-		delete koopa;
-	}
-	delete koopas;
-
-	for (Mushroom* mush : *mushrooms) {
-		delete mush;
-	}
-	delete mushrooms;
 
 	// Elimina las texturas
 	for (Texture* texture : textures) {
@@ -157,20 +131,22 @@ void Game::loadMap()
 		}
 		case 'B': {
 			Block* block = new Block(this, is);
-			blocks->push_back(block);
 			objectQueue.push_back(block);
 			break;
 		}
 		case 'G': {
 			Goomba* goomba = new Goomba(this, is);
-			goombas->push_back(goomba);
 			objectQueue.push_back(goomba);
 			break;
 		}
 		case 'K': {
 			Koopa* koopa = new Koopa(this, is);
-			koopas->push_back(koopa);
 			objectQueue.push_back(koopa);
+			break;
+		}
+		case 'C': {
+			Coin* coin = new Coin(this, is);
+			objectQueue.push_back(coin);
 			break;
 		}
 		default:
@@ -180,7 +156,7 @@ void Game::loadMap()
 	}
 	catch (const std::string& error)
 	{
-		throw std::string("Error al cargar " + getMap(WORLD1TXT));
+		throw std::string("Error al cargar los mapas");
 	}
 }
 
@@ -188,12 +164,9 @@ Collision Game::checkCollision(const SDL_Rect& rect, Collision::Target target)
 {
 	Collision coll;
 	for (auto obj : sceneObjects) {
-		if (true)
-		{
-			coll = obj->hit(rect, target);
-			if (coll) {
-				return coll;
-			}
+		coll = obj->hit(rect, target);
+		if (coll) {
+			return coll;
 		}
 	}
 	coll = tilemap->hit(rect, target);
@@ -206,7 +179,7 @@ Collision Game::checkCollision(const SDL_Rect& rect, Collision::Target target)
 void Game::addMushroom(Point2D _pos)
 {
 	Mushroom* mush = new Mushroom(this, _pos);
-	mushrooms->push_back(mush);
+	sceneObjects.push_back(mush);
 }
 
 void Game::renderLifes()
@@ -252,10 +225,6 @@ Game::render()
 		obj->render();
 	}
 
-	for (Mushroom* mush : *mushrooms) {
-		mush->render();
-	}
-
 	renderLifes();
 
 	SDL_RenderPresent(renderer);
@@ -264,6 +233,7 @@ Game::render()
 void
 Game::update()
 {
+	addVisibleObjects();
 	if (player->getPosition().getX() >= finalX) { // si llega al final
 		seguir = false;
 	}
@@ -286,24 +256,22 @@ Game::update()
 		mapOffset += 8;
 	}
 
-	for (auto obj : sceneObjects)
-	{
-		obj->update();
-	}
-
-	for (auto it = mushrooms->begin(); it != mushrooms->end(); ) {
-		Mushroom* Mush = *it;
-
-		if (Mush->IsAlive()) {
-			Mush->update();
-			++it;
+	for (auto it = sceneObjects.begin(); it != sceneObjects.end(); /* vacío */) {
+		SceneObject* obj = *it;
+		// Si el objeto es válido, eliminamos usando su ancla
+		if (obj == nullptr) {
+			obj->getListAnchor().unlink();
 		}
 		else {
-			delete Mush;
-			it = mushrooms->erase(it);
+			obj->update();
 		}
+		++it;
 	}
-	addVisibleObjects();
+	updatescounter++;
+	if (updatescounter >= ANIM_RANGE)
+	{
+		updatescounter = 0;
+	}
 }
 
 void

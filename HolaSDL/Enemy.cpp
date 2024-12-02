@@ -7,25 +7,26 @@ Enemy::Enemy(Game* _game, std::istream& is) :
 	is >> pos;
 	pos = pos * BlockTam;
 	vel = Point2D(-speed, 0);
-	frozen = true;
 }
 
 void Enemy::update()
 {
-	if (!frozen)
-	{
 		// Acelra la velocidad con la gravedad
 		vel = vel + gravity;
-
-		// Velocidad en este ciclo (no siempre avanza lateralmente)
-		Point2D realSpeed = vel;
 
 		// Intenta moverse
 		Collision collision = tryToMove(vel, Collision::PLAYER);
 
 		// Si toca un objeto en horizontal cambia de dirección
-		if (collision.horizontal)
+		if (collision.horizontal) {
+			if (orientation == SDL_FLIP_NONE) {
+				orientation = SDL_FLIP_HORIZONTAL;
+			}
+			else {
+				orientation = SDL_FLIP_NONE;
+			}
 			vel.setX(-vel.getX());
+		}
 
 		// Si toca un objeto en vertical anula la velocidad (para que no se acumule la gravedad)
 		if (collision.vertical)
@@ -33,7 +34,7 @@ void Enemy::update()
 
 		// Si se sale del mapa por abajo
 		if (pos.getY() > Game::WIN_HEIGHT || pos.getX() < game->getMapOffset() - BlockTam) {
-			isAlive = false;
+			delete this;
 		}
 
 		//actualiza el frame
@@ -47,20 +48,19 @@ void Enemy::update()
 			}
 			frameTime = 0;
 		}
-	}
-	else {
-		defrost();
-	}
 }
 
 void Enemy::render() const
 {
 	SDL_Rect rect = getRenderRect();
-	texture->renderFrame(rect, 0, frame);
+	texture->renderFrame(rect, 0, frame, orientation);
 }
 
 Collision Enemy::hit(const SDL_Rect& rect, Collision::Target target)
 {
+	if (target == Collision::PLAYER) {
+		return NO_COLLISION;
+	}
 	Collision coll;
 	SDL_Rect actrect = getCollisionRect();
 	coll.collides = SDL_IntersectRect(&rect, &actrect, &coll.rect);
@@ -68,9 +68,10 @@ Collision Enemy::hit(const SDL_Rect& rect, Collision::Target target)
 		if (target == Collision::ENEMIES)
 		{
 			//Comprobacion de que la collision ha sido desde arriba
-			if (coll.rect.y <= actrect.y && coll.rect.w > BlockTam / 8 && coll.rect.h < BlockTam * 3 / 4)
+			if (coll.rect.y <= actrect.y && coll.rect.w > BlockTam4 && coll.rect.h < BlockTam4 * 3)
 			{
-				isAlive = false;
+				coll.isEnemy = true;
+				delete this;
 			}
 			else {
 				coll.damages = true;
@@ -79,11 +80,4 @@ Collision Enemy::hit(const SDL_Rect& rect, Collision::Target target)
 	}
 
 	return coll;
-}
-
-void Enemy::defrost()
-{
-	if (pos.getX() < game->getMapOffset() + Game::WIN_WIDTH) {
-		frozen = false;
-	}
 }

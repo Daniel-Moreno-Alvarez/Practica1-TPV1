@@ -15,10 +15,15 @@ protected:
 	Point2D vel;
 	int height;
 	int width;
+	SDL_RendererFlip orientation = SDL_FLIP_NONE;
 	Texture* texture = nullptr;
 	bool target = false;
 	bool isAlive = true;
 	bool frozen = false;
+
+	int frame = 0;
+	int frameTime = 0;
+	int frameMax;
 	
 public:
 

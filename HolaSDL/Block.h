@@ -26,9 +26,7 @@ class Block : public SceneObject
 private:
 	BlockTipe tipe;
 	BlockAction action;
-	int frame = 0;
-	int frameTime = 0;
-	const int frameMax = 4;
+	int frameMax = 4;
 public:
 	Block(Game* _game, std::istream& is);
 	void render() const override;

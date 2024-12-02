@@ -13,6 +13,7 @@
 #include "Goomba.h"
 #include "Koopa.h"
 #include "Mushroom.h"
+#include "Coin.h"
 #include "SceneObject.h"
 
 using uint = unsigned int;
@@ -22,6 +23,7 @@ const float BlockTam = 32;
 const float BlockTam2 = BlockTam / 2;
 const float BlockTam4 = BlockTam / 4;
 const Point2D gravity = Point2D(0, 2);
+const int ANIM_RANGE = 5;
 //
 // Clase que representa el juego y controla todos sus aspectos
 //
@@ -42,16 +44,8 @@ public:
 		SHELL,
 		STAR,
 		SUPERMARIO,
+		COIN,
 		NUM_TEXTURES,  // Truco C++: número de texturas definidas
-	};
-
-	// Identificadores de las texturas
-	enum MapName {
-		WORLD1CSV,
-		WORLD1TXT,
-		WORLD2CSV,
-		WORLD2TXT,
-		NUM_MAPS,  // Truco C++: número de texturas definidas
 	};
 
 private:
@@ -61,8 +55,6 @@ private:
 	SDL_Renderer* renderer = nullptr;
 	// Array con todas las texturas del juego
 	std::array<Texture*, NUM_TEXTURES> textures;
-	// Array con todas los maps de juego csv y txt
-	std::array<std::string, NUM_MAPS> maps;
 	// Interruptor para terminar el juego
 	bool seguir;
 	//offset del mapa
@@ -76,15 +68,14 @@ private:
 
 	int r, g, b;
 
-	unsigned int level = 2;
+	unsigned int level = 1;
+
 	TileMap* tilemap;
 	Player* player;
-	vector<Block*>* blocks;
-	vector<Goomba*>* goombas;
-	vector<Koopa*>* koopas;
-	vector<Mushroom*>* mushrooms;
 
 	int finalX;
+
+	int updatescounter = 0;
 
 public:
 	void run();
@@ -106,7 +97,7 @@ public:
 	int getMapOffset() const { return mapOffset; };
 	PlayerState getPlayerState() { return player->getState(); }
 	Texture* getTexture(TextureName name) const;
-	string getMap(MapName name) const;
+	bool changeFrame() const { return updatescounter == 0; };
 
 	// Seters
 	void setPlayerState(PlayerState pySt) { player->SetState(pySt); }
@@ -122,9 +113,4 @@ inline Texture*
 Game::getTexture(TextureName name) const
 {
 	return textures[name];
-}
-
-inline string
-Game::getMap(MapName name) const {
-	return maps[name];
 }

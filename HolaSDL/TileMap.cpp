@@ -28,7 +28,7 @@ TileMap::TileMap(Game* _game, unsigned int _level) : game(_game), level(_level) 
     }
 	catch (const std::string& error)
 	{
-		throw "Error al cargar " + game->getMap(Game::WORLD1CSV);
+		throw "Error al cargar el mapa .csv";
 	}
 }
 
@@ -56,7 +56,7 @@ Collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer) {
     Collision coll;
 
     int ini = game->getMapOffset() / BlockTam;
-    int fin = ini + Game::WIN_WIDTH / BlockTam + 1;
+    int fin = ini + Game::WIN_WIDTH / BlockTam + 5;
     for (int i = 0; i < map.size() && !coll; i++) {
         for (int j = ini; j < fin && !coll; j++) {
             if (map[i][j] > 0 && map[i][j] % texture->getNumColumns() < validColums) {

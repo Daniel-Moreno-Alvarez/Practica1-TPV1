@@ -9,7 +9,6 @@ Player::Player(Game* _game, Point2D _pos, int _lifes) :
 {
 	SetState(MARIO_ST);
 	oripos = pos;
-	onTheGround = false;
 }
 
 Player::Player(Game* _game, std::istream& is) :
@@ -19,7 +18,6 @@ Player::Player(Game* _game, std::istream& is) :
 	is >> pos >> lifes;
 	pos = pos * BlockTam;
 	oripos = pos;
-	onTheGround = false;
 }
 
 void Player::update()
@@ -32,8 +30,13 @@ void Player::update()
 		vel.setX(0);
 	}
 	if (coll.vertical) {
-		onTheGround = vel.getY() > 0;
+		if (vel.getY() > 0) {
+			onTheGround = true;
+		}
 		vel.setY(0);
+	}
+	else {
+		onTheGround = false;
 	}
 
 	// Para que no se salga del mapa

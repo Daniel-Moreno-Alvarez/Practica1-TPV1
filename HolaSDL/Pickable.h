@@ -7,6 +7,7 @@ class Pickable : public SceneObject
 {
 public:
 	Pickable(Game* _game, Point2D _pos);
+	Pickable(Game* _game);
 
 	void render() const override;
 	Collision hit(const SDL_Rect& rect, Collision::Target target) override;

@@ -10,7 +10,7 @@ Block::Block(Game* _game, std::istream& is) :
 	pos = pos * BlockTam;
 	height = BlockTam;
 	width = BlockTam;
-
+	
 	char _action = ' ';
 
 	switch (_tipe)
@@ -69,17 +69,15 @@ void Block::render() const
 
 void Block::update()
 {
-	//actualiza el frame para surprise
+	// Actualiza el frame para surprise
 	if (tipe == SURPRISE) {
-		frameTime++;
-		if (frameTime >= 5)
+		if (game->changeFrame())
 		{
 			frame++;
 			if (frame >= frameMax)
 			{
 				frame = 0;
 			}
-			frameTime = 0;
 		}
 	}
 }
@@ -92,16 +90,20 @@ Collision Block::hit(const SDL_Rect& rect, Collision::Target target) {
 	{
 		coll.horizontal = coll.rect.w;
 		coll.vertical = coll.rect.h;
+		coll.result = Collision::OBSTACLE;
 	}
-	if (coll && coll.rect.y > actrect.y + BlockTam / 4 && coll.rect.w > BlockTam / 4) { // colision por abajo
+	if (coll && coll.rect.y > actrect.y + BlockTam4 && coll.rect.w > BlockTam4) { // colision por abajo
 		if (tipe == SURPRISE || tipe == HIDDEN) {
 			tipe = VOID;
 			if (action == POWERUP) {
-				game->addMushroom(pos);
+				game->addMushroom(Point2D(pos.getX(),pos.getY() - BlockTam));
+			}
+			else if (action == COIN) {
+
 			}
 		}
-		if (tipe == BRICK && game->getPlayerState() == SUPERMARIO_ST) {
-			isAlive = false;
+		else if (tipe == BRICK && game->getPlayerState() == SUPERMARIO_ST) {
+			delete this;
 		}
 	}
 	return coll;

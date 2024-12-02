@@ -7,16 +7,13 @@ Mushroom::Mushroom(Game* _game, Point2D _pos) :
 	texture = game->getTexture(Game::MUSHROOM);
 	height = BlockTam;
 	width = BlockTam;
-	vel = Point2D(-speed, 0);
+	vel = Point2D(speed, 0);
 }
 
 void Mushroom::update()
 {
 	// Acelra la velocidad con la gravedad
 	vel = vel + gravity;
-
-	// Velocidad en este ciclo (no siempre avanza lateralmente)
-	Point2D realSpeed = vel;
 
 	// Intenta moverse
 	Collision collision = tryToMove(vel, Collision::PLAYER);
@@ -29,14 +26,12 @@ void Mushroom::update()
 	if (collision.vertical)
 		vel.setY(0);
 
-	// Si se sale del mapa por abajo
-	if (pos.getY() > Game::WIN_HEIGHT || pos.getX() < game->getMapOffset() - BlockTam) {
-		isAlive = false;
-	}
-
-	//Si se sale del mapa por abajo
-	if (pos.getY() > Game::WIN_HEIGHT || pos.getX() < game->getMapOffset() - BlockTam) {
-		isAlive = false;
+	// Si se sale de la ventana
+	if (pos.getY() > Game::WIN_HEIGHT || 
+		pos.getX() < game->getMapOffset() - BlockTam || 
+		pos.getY() > Game::WIN_HEIGHT || 
+		pos.getX() < game->getMapOffset() - BlockTam) {
+		delete this;
 	}
 }
 

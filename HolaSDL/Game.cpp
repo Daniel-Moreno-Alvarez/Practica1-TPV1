@@ -134,6 +134,11 @@ void Game::loadMap()
 				objectQueue.push_back(coin);
 				break;
 			}
+			case 'L': {
+				Lift* lift = new Lift(this, is);
+				objectQueue.push_back(lift);
+				break;
+			}
 			default:
 				break;
 			}
@@ -246,6 +251,18 @@ Game::update()
 {
 	addVisibleObjects();
 
+	for (auto it = sceneObjects.begin(); it != sceneObjects.end();) {
+		SceneObject* obj = *it;
+		// Si el objeto no es valido, eliminamos usando su ancla
+		if (obj == nullptr) {
+			obj->getListAnchor().unlink();
+		}
+		else {
+			obj->update();
+		}
+		++it;
+	}
+
 	if (player->getPosition().getX() >= finalX) { // si llega al final
 		if (level >= finalLevel) {
 			seguir = false;
@@ -254,7 +271,6 @@ Game::update()
 			nextLevel();
 		}
 	}
-
 	if (player->IsAlive() && player->getLifes() > 0) {
 		player->update();
 	}
@@ -272,17 +288,6 @@ Game::update()
 		mapOffset += 8;
 	}
 
-	for (auto it = sceneObjects.begin(); it != sceneObjects.end(); /* vacío */) {
-		SceneObject* obj = *it;
-		// Si el objeto es válido, eliminamos usando su ancla
-		if (obj == nullptr) {
-			obj->getListAnchor().unlink();
-		}
-		else {
-			obj->update();
-		}
-		++it;
-	}
 	updatescounter++;
 	if (updatescounter >= ANIM_RANGE)
 	{
@@ -292,6 +297,9 @@ Game::update()
 
 void Game::resetLevel()
 {
+	for (auto obj : sceneObjects) {
+		delete obj;
+	}
 	mapOffset = 0;
 	nextObject = 0;
 	player->restart();

@@ -41,6 +41,11 @@ void Player::update()
 	else {
 		onTheGround = false;
 	}
+	if (!onTheGround) {
+		if (onTheGround = isOnTheground()) {
+			vel.setY(0);
+		}
+	}
 
 	// Para que no se salga del mapa
 	if (pos.getX() < game->getMapOffset()) {
@@ -151,4 +156,11 @@ void Player::restart()
 SceneObject* Player::clone() const
 {
 	return new Player(*this);
+}
+
+bool Player::isOnTheground()
+{
+	SDL_Rect rect = getCollisionRect();
+	rect.y += 1;
+	return game->checkCollision(rect, Collision::ENEMIES);
 }

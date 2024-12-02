@@ -16,8 +16,8 @@ class Player : public SceneObject
 {
 private:
 	const float speed = 8;
-	const float jump = -25;
-	const float minijump = -10;
+	const float jump = -32;
+	const float minijump = -15;
 	const float inmmuneLimit = 50;
 	Point2D oripos;
 	PlayerState actualState;
@@ -40,4 +40,6 @@ public:
 	Point2D getPosition() const { return pos; }
 	int getLifes() const { return lifes; }
 	bool IsInmmune() const { return isInmmune; };
+
+	bool isOnTheground();
 };

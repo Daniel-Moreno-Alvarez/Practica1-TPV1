@@ -14,6 +14,7 @@
 #include "Koopa.h"
 #include "Mushroom.h"
 #include "Coin.h"
+#include "Lift.h"
 #include "SceneObject.h"
 
 using uint = unsigned int;
@@ -22,7 +23,7 @@ const float SCALE = 2;
 const float BlockTam = 32;
 const float BlockTam2 = BlockTam / 2;
 const float BlockTam4 = BlockTam / 4;
-const Point2D gravity = Point2D(0, 2);
+const Point2D gravity = Point2D(0, 3);
 const int ANIM_RANGE = 5;
 const float MAX_SPEED = 20;
 //
@@ -71,7 +72,7 @@ private:
 	TileMap* tilemap;
 	Player* player;
 
-	unsigned int level = 1;
+	unsigned int level = 2;
 	const int finalLevel = 2;
 	int r, g, b;
 	int finalX;

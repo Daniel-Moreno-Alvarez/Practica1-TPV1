@@ -40,6 +40,7 @@ void Mushroom::update()
 
 void Mushroom::triggerAction()
 {
+	game->addPoints(mushroomPoints);
 	game->setPlayerState(PlayerState::SUPERMARIO_ST);
 }
 

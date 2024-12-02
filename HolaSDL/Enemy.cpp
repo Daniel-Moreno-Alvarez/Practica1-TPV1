@@ -70,6 +70,7 @@ Collision Enemy::hit(const SDL_Rect& rect, Collision::Target target)
 			//Comprobacion de que la collision ha sido desde arriba
 			if (coll.rect.y <= actrect.y && coll.rect.w > BlockTam4 && coll.rect.h < BlockTam4 * 3)
 			{
+				game->addPoints(enemyPoints);
 				coll.isEnemy = true;
 				delete this;
 			}

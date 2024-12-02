@@ -99,10 +99,11 @@ Collision Block::hit(const SDL_Rect& rect, Collision::Target target) {
 				game->addMushroom(Point2D(pos.getX(),pos.getY() - BlockTam));
 			}
 			else if (action == COIN) {
-
+				game->addPoints(coinPoints);
 			}
 		}
 		else if (tipe == BRICK && game->getPlayerState() == SUPERMARIO_ST) {
+			game->addPoints(brickPoints);
 			delete this;
 		}
 	}

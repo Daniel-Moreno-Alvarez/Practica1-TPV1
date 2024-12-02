@@ -32,6 +32,7 @@ const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
 	{"supermario.png", 22, 1},
 	{"coin.png", 4, 1},
 	{"lift.png", 1, 1},
+	{"numbers.png", 10, 1},
 };
 
 Game::Game()
@@ -172,14 +173,9 @@ void Game::addMushroom(Point2D _pos)
 	sceneObjects.push_back(mush);
 }
 
-void Game::renderLifes()
+void Game::addPoints(int _p)
 {
-	int tam = 20;
-	int offset = 5;
-	for (int i = 0; i < player->getLifes(); i++) {
-		SDL_Rect rect = { offset + (tam + offset) * i, offset, tam,tam};
-		getTexture(MARIO)->renderFrame(rect, 0, 0);
-	}
+	infoBar->setPoints(_p);
 }
 
 void
@@ -208,6 +204,7 @@ void Game::startObjects()
 	// Crea los objetos del juego
 	tilemap = new TileMap(this, level);
 	finalX = (tilemap->getFinalX() - 1) * BlockTam;
+	infoBar = new InfoBar(this);
 	loadMap();
 }
 
@@ -216,6 +213,7 @@ void Game::deleteObjects()
 	// Elimina los objetos del juego
 	delete tilemap;
 	delete player;
+	delete infoBar;
 
 	for (auto obj : sceneObjects)
 	{
@@ -236,12 +234,11 @@ Game::render()
 
 	tilemap->render();
 	player->render();
+	infoBar->render();
 
 	for (auto obj : sceneObjects) {
 		obj->render();
 	}
-
-	renderLifes();
 
 	SDL_RenderPresent(renderer);
 }

@@ -15,7 +15,10 @@
 #include "Mushroom.h"
 #include "Coin.h"
 #include "Lift.h"
-#include "SceneObject.h"
+#include "InfoBar.h"
+#include "SDLError.h"
+#include "FileNotFoundError.h"
+#include "FileFormatError.h"
 
 using uint = unsigned int;
 
@@ -26,6 +29,10 @@ const float BlockTam4 = BlockTam / 4;
 const Point2D gravity = Point2D(0, 3);
 const int ANIM_RANGE = 5;
 const float MAX_SPEED = 20;
+const int enemyPoints = 100;
+const int brickPoints = 50;
+const int mushroomPoints = 1000;
+const int coinPoints = 200;
 //
 // Clase que representa el juego y controla todos sus aspectos
 //
@@ -48,6 +55,7 @@ public:
 		SUPERMARIO,
 		COIN,
 		LIFT,
+		NUMBERS,
 		NUM_TEXTURES,  // Truco C++: número de texturas definidas
 	};
 
@@ -71,9 +79,10 @@ private:
 
 	TileMap* tilemap;
 	Player* player;
+	InfoBar* infoBar;
 
-	unsigned int level = 2;
-	const int finalLevel = 2;
+	unsigned int level = 1;
+	const unsigned int finalLevel = 2;
 	int r, g, b;
 	int finalX;
 
@@ -91,7 +100,7 @@ public:
 	void loadMap();
 	Collision checkCollision(const SDL_Rect& rect, Collision::Target target);
 	void addMushroom(Point2D _pos);
-	void renderLifes();
+	void addPoints(int _p);
 
 	// Constante globales
 	static constexpr uint WIN_WIDTH = 576;
@@ -102,6 +111,8 @@ public:
 	int getMapOffset() const { return mapOffset; };
 	PlayerState getPlayerState() { return player->getState(); }
 	Texture* getTexture(TextureName name) const;
+
+	Player* getPlayer() const { return player; };
 
 	bool changeFrame() const { return updatescounter == 0; };
 

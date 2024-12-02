@@ -2,12 +2,12 @@
 #include "Game.h"
 
 Pickable::Pickable(Game* _game, Point2D _pos) : 
-	SceneObject(_game,_pos, false)
+	SceneObject(_game,_pos)
 {
 }
 
 Pickable::Pickable(Game* _game) : 
-	SceneObject(_game, false)
+	SceneObject(_game)
 {
 }
 

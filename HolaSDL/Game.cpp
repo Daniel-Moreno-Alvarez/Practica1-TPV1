@@ -31,6 +31,7 @@ const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
 	{"star.png", 4, 1},
 	{"supermario.png", 22, 1},
 	{"coin.png", 4, 1},
+	{"lift.png", 1, 1},
 };
 
 Game::Game()
@@ -74,27 +75,12 @@ Game::Game()
 		}
 	}
 
-	// Crea los objetos del juego
-	tilemap = new TileMap(this, level);
-	finalX = tilemap->getFinalX() * BlockTam;
-	loadMap();
+	startObjects();
 }
 
 Game::~Game()
 {
-	// Elimina los objetos del juego
-	delete tilemap;
-	delete player;
-
-	for (auto obj : sceneObjects)
-	{
-		delete obj;
-	}
-
-	for (auto obj : objectQueue)
-	{
-		delete obj;
-	}
+	deleteObjects();
 
 	// Elimina las texturas
 	for (Texture* texture : textures) {
@@ -113,50 +99,49 @@ void Game::loadMap()
 	{
 		string i = to_string(level);
 		ifstream file("../assets/maps/world" + i + ".txt");
-
-	string line;
-	getline(file, line);
-	istringstream is(line);
-	is >> r >> g >> b;
-	SDL_SetRenderDrawColor(renderer, r, g, b, 255);
-	while (getline(file, line)) {
+		string line;
+		getline(file, line);
 		istringstream is(line);
-		char type;
-		is >> type;
-		switch (type)
-		{
-		case 'M': {
-			player = new Player(this, is);
-			break;
+		is >> r >> g >> b;
+		SDL_SetRenderDrawColor(renderer, r, g, b, 255);
+		while (getline(file, line)) {
+			istringstream is(line);
+			char type;
+			is >> type;
+			switch (type)
+			{
+			case 'M': {
+				player = new Player(this, is);
+				break;
+			}
+			case 'B': {
+				Block* block = new Block(this, is);
+				objectQueue.push_back(block);
+				break;
+			}
+			case 'G': {
+				Goomba* goomba = new Goomba(this, is);
+				objectQueue.push_back(goomba);
+				break;
+			}
+			case 'K': {
+				Koopa* koopa = new Koopa(this, is);
+				objectQueue.push_back(koopa);
+				break;
+			}
+			case 'C': {
+				Coin* coin = new Coin(this, is);
+				objectQueue.push_back(coin);
+				break;
+			}
+			default:
+				break;
+			}
 		}
-		case 'B': {
-			Block* block = new Block(this, is);
-			objectQueue.push_back(block);
-			break;
-		}
-		case 'G': {
-			Goomba* goomba = new Goomba(this, is);
-			objectQueue.push_back(goomba);
-			break;
-		}
-		case 'K': {
-			Koopa* koopa = new Koopa(this, is);
-			objectQueue.push_back(koopa);
-			break;
-		}
-		case 'C': {
-			Coin* coin = new Coin(this, is);
-			objectQueue.push_back(coin);
-			break;
-		}
-		default:
-			break;
-		}
-	}
 	}
 	catch (const std::string& error)
 	{
-		throw std::string("Error al cargar los mapas");
+		throw std::string("Error al cargar el mapa .txt");
 	}
 }
 
@@ -213,6 +198,32 @@ Game::run()
 	}
 }
 
+void Game::startObjects()
+{
+	// Crea los objetos del juego
+	tilemap = new TileMap(this, level);
+	finalX = (tilemap->getFinalX() - 1) * BlockTam;
+	loadMap();
+}
+
+void Game::deleteObjects()
+{
+	// Elimina los objetos del juego
+	delete tilemap;
+	delete player;
+
+	for (auto obj : sceneObjects)
+	{
+		delete obj;
+	}
+
+	for (auto obj : objectQueue)
+	{
+		delete obj;
+	}
+	objectQueue.clear();
+}
+
 void
 Game::render()
 {
@@ -234,8 +245,14 @@ void
 Game::update()
 {
 	addVisibleObjects();
+
 	if (player->getPosition().getX() >= finalX) { // si llega al final
-		seguir = false;
+		if (level >= finalLevel) {
+			seguir = false;
+		}
+		else {
+			nextLevel();
+		}
 	}
 
 	if (player->IsAlive() && player->getLifes() > 0) {
@@ -243,8 +260,7 @@ Game::update()
 	}
 	else {
 		if (player->getLifes() > 0) {
-			mapOffset = 0;
-			player->restart();
+			resetLevel();
 		}
 		else {
 			seguir = false;
@@ -272,6 +288,22 @@ Game::update()
 	{
 		updatescounter = 0;
 	}
+}
+
+void Game::resetLevel()
+{
+	mapOffset = 0;
+	nextObject = 0;
+	player->restart();
+}
+
+void Game::nextLevel()
+{
+	deleteObjects();
+	mapOffset = 0;
+	nextObject = 0;
+	level++;
+	startObjects();
 }
 
 void

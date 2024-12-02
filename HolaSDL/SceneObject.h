@@ -17,7 +17,6 @@ protected:
 	int width;
 	SDL_RendererFlip orientation = SDL_FLIP_NONE;
 	Texture* texture = nullptr;
-	bool target = false;
 	bool isAlive = true;
 	bool frozen = false;
 
@@ -27,14 +26,14 @@ protected:
 	
 public:
 
-	SceneObject(Game* _game, bool _target) :
-		GameObject(_game), pos(Point2D()), vel(Point2D()), height(0), width(0), target(_target)
+	SceneObject(Game* _game) :
+		GameObject(_game), pos(Point2D()), vel(Point2D()), height(0), width(0)
 	{};
-	SceneObject(Game* _game, Point2D _pos,  bool _target) :
-		GameObject(_game), pos(_pos), vel(Point2D()), height(0), width(0), target(_target)
+	SceneObject(Game* _game, Point2D _pos) :
+		GameObject(_game), pos(_pos), vel(Point2D()), height(0), width(0)
 	{};
-	SceneObject(Game* _game, Point2D _pos, Point2D _vel, int _h, int _w, bool _target) :
-		GameObject(_game), pos(_pos), vel(_vel), height(_h), width(_w), target(_target)
+	SceneObject(Game* _game, Point2D _pos, Point2D _vel, int _h, int _w) :
+		GameObject(_game), pos(_pos), vel(_vel), height(_h), width(_w)
 	{};
 	SceneObject(const SceneObject& other) :
 		GameObject(other.game),

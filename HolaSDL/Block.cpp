@@ -2,7 +2,7 @@
 #include "Game.h"
 
 Block::Block(Game* _game, std::istream& is) :
-	SceneObject(_game, false)
+	SceneObject(_game)
 {
 	texture = game->getTexture(Game::BLOCKS);
 	char _tipe;

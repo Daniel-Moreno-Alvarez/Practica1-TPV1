@@ -24,6 +24,7 @@ const float BlockTam2 = BlockTam / 2;
 const float BlockTam4 = BlockTam / 4;
 const Point2D gravity = Point2D(0, 2);
 const int ANIM_RANGE = 5;
+const float MAX_SPEED = 20;
 //
 // Clase que representa el juego y controla todos sus aspectos
 //
@@ -45,6 +46,7 @@ public:
 		STAR,
 		SUPERMARIO,
 		COIN,
+		LIFT,
 		NUM_TEXTURES,  // Truco C++: número de texturas definidas
 	};
 
@@ -66,19 +68,21 @@ private:
 	std::vector<SceneObject*> objectQueue;
 	int nextObject;
 
-	int r, g, b;
-
-	unsigned int level = 1;
-
 	TileMap* tilemap;
 	Player* player;
 
+	unsigned int level = 1;
+	const int finalLevel = 2;
+	int r, g, b;
 	int finalX;
 
 	int updatescounter = 0;
 
 public:
 	void run();
+
+	void startObjects();
+	void deleteObjects();
 
 	void update();
 	void render();
@@ -97,10 +101,13 @@ public:
 	int getMapOffset() const { return mapOffset; };
 	PlayerState getPlayerState() { return player->getState(); }
 	Texture* getTexture(TextureName name) const;
+
 	bool changeFrame() const { return updatescounter == 0; };
 
 	// Seters
 	void setPlayerState(PlayerState pySt) { player->SetState(pySt); }
+	void resetLevel();
+	void nextLevel();
 
 	void addVisibleObjects();
 	void addObject(SceneObject* object);

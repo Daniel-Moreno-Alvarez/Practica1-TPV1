@@ -1,11 +1,13 @@
 #include "TileMap.h"
 #include "Game.h"
 
-TileMap::TileMap(Game* _game, unsigned int _level) : game(_game), level(_level) {
+TileMap::TileMap(Game* _game, unsigned int _level) :
+    SceneObject(_game)
+{
     try {
         texture = game->getTexture(Game::BACKGROUND);
 
-        string i = to_string(level);
+        string i = to_string(_level);
         ifstream file("../assets/maps/world" + i + ".csv");
         string line;
 
@@ -52,7 +54,12 @@ void TileMap::render() const
     }
 }
 
-Collision TileMap::hit(const SDL_Rect& rect, bool fromPlayer) {
+SceneObject* TileMap::clone() const
+{
+    return new TileMap(*this);
+}
+
+Collision TileMap::hit(const SDL_Rect& rect, Collision::Target target) {
     Collision coll;
 
     int ini = game->getMapOffset() / BlockTam;

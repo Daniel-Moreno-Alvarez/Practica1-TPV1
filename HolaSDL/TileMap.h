@@ -5,23 +5,25 @@
 
 #include "Texture.h"
 #include "Collision.h"
+#include "SceneObject.h"
 
 using namespace std;
 class Game;
 
 
-class TileMap {
-    Game* game;
-    Texture* texture;
+class TileMap : public SceneObject
+{
 public:
     const int validColums = 4;
     TileMap(Game* game, unsigned int _level);
-    void render() const;
-    Collision hit(const SDL_Rect& rect, bool fromPlayer);
+    void render() const override;
+    void update() override {};
+    virtual SceneObject* clone() const override;
+
+    Collision hit(const SDL_Rect& rect, Collision::Target target) override;
     int getFinalX() const { return final; }
 private:
     vector<vector<int>> map;
-    unsigned int level;
     int final = -1;
 };
 

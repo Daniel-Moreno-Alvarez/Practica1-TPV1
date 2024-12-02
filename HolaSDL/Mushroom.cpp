@@ -14,6 +14,9 @@ void Mushroom::update()
 {
 	// Acelra la velocidad con la gravedad
 	vel = vel + gravity;
+	if (vel.getY() >= MAX_SPEED) {
+		vel.setY(MAX_SPEED);
+	}
 
 	// Intenta moverse
 	Collision collision = tryToMove(vel, Collision::PLAYER);

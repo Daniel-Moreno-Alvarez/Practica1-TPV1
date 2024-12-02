@@ -4,7 +4,7 @@
 constexpr int FRAME_PERIOD = 20;
 
 Player::Player(Game* _game, Point2D _pos, int _lifes) : 
-	SceneObject(_game, _pos, {0,0}, 0, 0, true),
+	SceneObject(_game, _pos, {0,0}, 0, 0),
 	lifes(_lifes)
 {
 	SetState(MARIO_ST);
@@ -12,7 +12,7 @@ Player::Player(Game* _game, Point2D _pos, int _lifes) :
 }
 
 Player::Player(Game* _game, std::istream& is) :
-	SceneObject(_game, {0,0}, {0,0}, 0, 0, true)
+	SceneObject(_game, {0,0}, {0,0}, 0, 0)
 {
 	SetState(MARIO_ST);
 	is >> pos >> lifes;
@@ -23,6 +23,9 @@ Player::Player(Game* _game, std::istream& is) :
 void Player::update()
 {
 	vel = vel + gravity;
+	if (vel.getY() >= MAX_SPEED) {
+		vel.setY(MAX_SPEED);
+	}
 
 	Collision coll = tryToMove(vel, Collision::ENEMIES);
 

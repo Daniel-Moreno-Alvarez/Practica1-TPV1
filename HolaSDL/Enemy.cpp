@@ -2,7 +2,7 @@
 #include "Game.h"
 
 Enemy::Enemy(Game* _game, std::istream& is) :
-	SceneObject(_game, false)
+	SceneObject(_game)
 {
 	is >> pos;
 	pos = pos * BlockTam;
@@ -11,43 +11,43 @@ Enemy::Enemy(Game* _game, std::istream& is) :
 
 void Enemy::update()
 {
-		// Acelra la velocidad con la gravedad
-		vel = vel + gravity;
+	// Acelra la velocidad con la gravedad
+	vel = vel + gravity;
+	if (vel.getY() >= MAX_SPEED) {
+		vel.setY(MAX_SPEED);
+	}
 
-		// Intenta moverse
-		Collision collision = tryToMove(vel, Collision::PLAYER);
+	// Intenta moverse
+	Collision collision = tryToMove(vel, Collision::PLAYER);
 
-		// Si toca un objeto en horizontal cambia de dirección
-		if (collision.horizontal) {
-			if (orientation == SDL_FLIP_NONE) {
-				orientation = SDL_FLIP_HORIZONTAL;
-			}
-			else {
-				orientation = SDL_FLIP_NONE;
-			}
-			vel.setX(-vel.getX());
+	// Si toca un objeto en horizontal cambia de dirección
+	if (collision.horizontal) {
+		if (orientation == SDL_FLIP_NONE) {
+			orientation = SDL_FLIP_HORIZONTAL;
 		}
-
-		// Si toca un objeto en vertical anula la velocidad (para que no se acumule la gravedad)
-		if (collision.vertical)
-			vel.setY(0);
-
-		// Si se sale del mapa por abajo
-		if (pos.getY() > Game::WIN_HEIGHT || pos.getX() < game->getMapOffset() - BlockTam) {
-			delete this;
+		else {
+			orientation = SDL_FLIP_NONE;
 		}
+		vel.setX(-vel.getX());
+	}
 
-		//actualiza el frame
-		frameTime++;
-		if (frameTime >= 10)
+	// Si toca un objeto en vertical anula la velocidad (para que no se acumule la gravedad)
+	if (collision.vertical)
+		vel.setY(0);
+
+	//actualiza el frame
+	if (game->changeFrame())
+	{
+		frame++;
+		if (frame >= frameMax)
 		{
-			frame++;
-			if (frame >= frameMax)
-			{
-				frame = 0;
-			}
-			frameTime = 0;
+			frame = 0;
 		}
+	}
+	// Si se sale del mapa por abajo
+	if (pos.getY() > Game::WIN_HEIGHT || pos.getX() < game->getMapOffset() - BlockTam) {
+		delete this;
+	}
 }
 
 void Enemy::render() const

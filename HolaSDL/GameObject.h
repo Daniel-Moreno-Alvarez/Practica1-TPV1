@@ -1,14 +1,14 @@
 #pragma once
 
-class Game;
+class GameState;
 
 class GameObject
 {
 protected:
-	Game* game;
+	GameState* gameST;
 public:
-	GameObject(Game* _game) : 
-		game(_game)
+	explicit GameObject(GameState* _gameST) :
+		gameST(_gameST)
 	{};
 	virtual ~GameObject() = default;
 	virtual void render() const = 0;

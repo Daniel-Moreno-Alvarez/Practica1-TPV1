@@ -6,12 +6,12 @@
 #include <istream>
 #include "Enemy.h"
 
-class Game;
+class PlayState;
 
 class Goomba : public Enemy
 {
 public:
-	Goomba(Game* _game, std::istream& is);
+	Goomba(PlayState* _game, std::istream& is);
 	SceneObject* clone() const override;
 };
 

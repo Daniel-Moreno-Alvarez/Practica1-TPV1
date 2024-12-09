@@ -1,19 +1,20 @@
 #include "Coin.h"
 #include "Game.h"
+#include "PlayState.h"
 
-Coin::Coin(Game* _game, std::istream& is) :
-	Pickable(_game)
+Coin::Coin(PlayState* _gameST, std::istream& is) :
+	Pickable(_gameST)
 {
 	is >> pos;
 	pos = pos * BlockTam;
-	texture = game->getTexture(Game::COIN);
+	texture = playST->getGame()->getTexture(Game::COIN);
 	height = BlockTam;
 	width = BlockTam;
 }
 
 void Coin::update()
 {
-	if (game->changeFrame())
+	if (playST->changeFrame())
 	{
 		frame++;
 		if (frame >= frameMax)
@@ -25,7 +26,7 @@ void Coin::update()
 
 void Coin::triggerAction()
 {
-	game->addPoints(coinPoints);
+	playST->addPoints(coinPoints);
 }
 
 SceneObject* Coin::clone() const

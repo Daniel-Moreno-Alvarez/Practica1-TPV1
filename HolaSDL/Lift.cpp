@@ -1,9 +1,11 @@
 #include "Lift.h"
 #include "Game.h"
-Lift::Lift(Game* _game, std::istream& is) :
-	SceneObject(_game)
+#include "PlayState.h"
+
+Lift::Lift(PlayState* _gameST, std::istream& is) :
+	SceneObject(_gameST)
 {
-	texture = game->getTexture(Game::LIFT);
+	texture = playST->getGame()->getTexture(Game::LIFT);
 	height = texture->getFrameHeight();
 	width = texture->getFrameWidth();
 	int speed;

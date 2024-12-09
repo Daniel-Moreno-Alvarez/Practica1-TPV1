@@ -1,5 +1,6 @@
 #include "SceneObject.h"
 #include "Game.h"
+#include "PlayState.h"
 
 Collision SceneObject::tryToMove(const Point2D& speed, Collision::Target attack) {
 	Collision collision;
@@ -9,7 +10,7 @@ Collision SceneObject::tryToMove(const Point2D& speed, Collision::Target attack)
 	if (speed.getY() != 0) {
 		rect.y += speed.getY();
 
-		collision = game->checkCollision(rect, attack);
+		collision = playST->checkCollision(rect, attack);
 
 		// Cantidad que se ha entrado en el obstáculo (lo que hay que deshacer)
 		int fix = collision.vertical * (speed.getY() > 0 ? 1 : -1);
@@ -27,7 +28,7 @@ Collision SceneObject::tryToMove(const Point2D& speed, Collision::Target attack)
 	if (speed.getX() != 0) {
 		rect.x += speed.getX();
 
-		Collision partial = game->checkCollision(rect, attack);
+		Collision partial = playST->checkCollision(rect, attack);
 
 		// Copia la información de esta colisión a la que se devolverá
 		collision.horizontal = partial.horizontal;
@@ -57,7 +58,7 @@ SDL_Rect
 SceneObject::getRenderRect() const
 {
 	return SDL_Rect{
-		int(pos.getX()) - game->getMapOffset(),  // coordenadas de la ventana
+		int(pos.getX()) - playST->getMapOffset(),  // coordenadas de la ventana
 		int(pos.getY()) - height,
 		width,
 		height

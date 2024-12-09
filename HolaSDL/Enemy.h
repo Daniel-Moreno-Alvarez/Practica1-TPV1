@@ -6,7 +6,7 @@
 #include <istream>
 #include "SceneObject.h"
 
-class Game;
+class PlayState;
 
 class Enemy : public SceneObject
 {
@@ -16,7 +16,7 @@ protected:
 	int frameTime = 0;
 	float frameMax = 2;
 public:
-	Enemy(Game* _game, std::istream& is);
+	Enemy(PlayState* _gameST, std::istream& is);
 
 	void update() override;
 	void render() const override;

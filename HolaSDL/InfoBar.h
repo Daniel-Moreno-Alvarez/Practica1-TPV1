@@ -10,7 +10,7 @@ private:
 	int offset = 5;
 	int points = 0;
 public:
-	InfoBar(Game* _game);
+	InfoBar(GameState* _game);
 
 	void render() const override;
 	void update() override {};

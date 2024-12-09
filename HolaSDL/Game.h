@@ -5,6 +5,8 @@
 // Biblioteca SDL
 #include <SDL.h>
 #include "GameList.h"
+#include "gameState.h"
+#include "PlayState.h"
 #include "Texture.h"
 #include "TileMap.h"
 #include "Player.h"
@@ -33,6 +35,7 @@ const int enemyPoints = 100;
 const int brickPoints = 50;
 const int mushroomPoints = 1000;
 const int coinPoints = 200;
+
 //
 // Clase que representa el juego y controla todos sus aspectos
 //
@@ -68,39 +71,17 @@ private:
 	std::array<Texture*, NUM_TEXTURES> textures;
 	// Interruptor para terminar el juego
 	bool seguir;
-	//offset del mapa
-	int mapOffset = 0;
-	// Objetos del juego
 
-	GameList<SceneObject> sceneObjects;
-
-	std::vector<SceneObject*> objectQueue;
-	int nextObject;
-
-	TileMap* tilemap;
-	Player* player;
-	InfoBar* infoBar;
-
-	unsigned int level = 1;
-	const unsigned int finalLevel = 2;
-	int r, g, b;
-	int finalX;
-
-	int updatescounter = 0;
+	// Estados del juego
+	GameState* currentState = nullptr;
+	PlayState* playState;
 
 public:
 	void run();
 
-	void startObjects();
-	void deleteObjects();
-
 	void update();
 	void render();
 	void handleEvents();
-	void loadMap();
-	Collision checkCollision(const SDL_Rect& rect, Collision::Target target);
-	void addMushroom(Point2D _pos);
-	void addPoints(int _p);
 
 	// Constante globales
 	static constexpr uint WIN_WIDTH = 576;
@@ -108,24 +89,12 @@ public:
 	static constexpr uint FRAME_RATE = 50;
 
 	// Geters
-	int getMapOffset() const { return mapOffset; };
-	PlayerState getPlayerState() { return player->getState(); }
 	Texture* getTexture(TextureName name) const;
-
-	Player* getPlayer() const { return player; };
-
-	bool changeFrame() const { return updatescounter == 0; };
-
-	// Seters
-	void setPlayerState(PlayerState pySt) { player->SetState(pySt); }
-	void resetLevel();
-	void nextLevel();
-
-	void addVisibleObjects();
-	void addObject(SceneObject* object);
 
 	Game();
 	~Game();
+
+	SDL_Renderer* getRenderer() const { return renderer; };
 };
 
 inline Texture*

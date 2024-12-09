@@ -8,14 +8,13 @@
 #include "SceneObject.h"
 
 using namespace std;
-class Game;
-
+class PlayState;
 
 class TileMap : public SceneObject
 {
 public:
     const int validColums = 4;
-    TileMap(Game* game, unsigned int _level);
+    TileMap(PlayState* game, unsigned int _level);
     void render() const override;
     void update() override {};
     virtual SceneObject* clone() const override;

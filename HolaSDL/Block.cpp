@@ -1,16 +1,16 @@
 #include "Block.h"
 #include "Game.h"
 
-Block::Block(Game* _game, std::istream& is) :
-	SceneObject(_game)
+Block::Block(PlayState* _gameST, std::istream& is) :
+	SceneObject(_gameST)
 {
-	texture = game->getTexture(Game::BLOCKS);
+	texture = playST->getGame()->getTexture(Game::BLOCKS);
 	char _tipe;
 	is >> pos >> _tipe;
 	pos = pos * BlockTam;
 	height = BlockTam;
 	width = BlockTam;
-	
+
 	char _action = ' ';
 
 	switch (_tipe)
@@ -71,7 +71,7 @@ void Block::update()
 {
 	// Actualiza el frame para surprise
 	if (tipe == SURPRISE) {
-		if (game->changeFrame())
+		if (playST->changeFrame())
 		{
 			frame++;
 			if (frame >= frameMax)
@@ -96,14 +96,14 @@ Collision Block::hit(const SDL_Rect& rect, Collision::Target target) {
 		if (tipe == SURPRISE || tipe == HIDDEN) {
 			tipe = VOID;
 			if (action == POWERUP) {
-				game->addMushroom(Point2D(pos.getX(),pos.getY() - BlockTam));
+				playST->addMushroom(Point2D(pos.getX(), pos.getY() - BlockTam));
 			}
 			else if (action == COIN) {
-				game->addPoints(coinPoints);
+				playST->addPoints(coinPoints);
 			}
 		}
-		else if (tipe == BRICK && game->getPlayerState() == SUPERMARIO_ST) {
-			game->addPoints(brickPoints);
+		else if (tipe == BRICK && playST->getPlayerState() == SUPERMARIO_ST) {
+			playST->addPoints(brickPoints);
 			delete this;
 		}
 	}

@@ -1,11 +1,12 @@
 #include "TileMap.h"
 #include "Game.h"
+#include "PlayState.h"
 
-TileMap::TileMap(Game* _game, unsigned int _level) :
-    SceneObject(_game)
+TileMap::TileMap(PlayState* _gameST, unsigned int _level) :
+    SceneObject(_gameST)
 {
     try {
-        texture = game->getTexture(Game::BACKGROUND);
+        texture = playST->getGame()->getTexture(Game::BACKGROUND);
 
         string i = to_string(_level);
         ifstream file("../assets/maps/world" + i + ".csv");
@@ -36,13 +37,13 @@ TileMap::TileMap(Game* _game, unsigned int _level) :
 
 void TileMap::render() const
 {
-    int ini = game->getMapOffset() / BlockTam;
+    int ini = playST->getMapOffset() / BlockTam;
     int fin = ini + Game::WIN_WIDTH / BlockTam + 1;
     for (size_t i = 0; i < map.size(); i++)
     {
         for (size_t j = ini; j < fin; j++)
         {
-            SDL_Rect rect{ j * BlockTam - game->getMapOffset(), i * BlockTam, BlockTam, BlockTam };
+            SDL_Rect rect{ j * BlockTam - playST->getMapOffset(), i * BlockTam, BlockTam, BlockTam };
             int x = 0, y = 0;
             int indice = map[i][j];
             if (indice > 0) {
@@ -62,7 +63,7 @@ SceneObject* TileMap::clone() const
 Collision TileMap::hit(const SDL_Rect& rect, Collision::Target target) {
     Collision coll;
 
-    int ini = game->getMapOffset() / BlockTam;
+    int ini = playST->getMapOffset() / BlockTam;
     int fin = ini + Game::WIN_WIDTH / BlockTam + 5;
     for (int i = 0; i < map.size() && !coll; i++) {
         for (int j = ini; j < fin && !coll; j++) {

@@ -6,7 +6,7 @@
 #include <istream>
 #include "SceneObject.h"
 
-class Game;
+class PlayState;
 
 enum BlockTipe {
 	BRICK,
@@ -28,7 +28,7 @@ private:
 	BlockAction action;
 	int frameMax = 4;
 public:
-	Block(Game* _game, std::istream& is);
+	Block(PlayState* _gameST, std::istream& is);
 	void render() const override;
 	void update() override;
 	Collision hit(const SDL_Rect& rect, Collision::Target target) override;

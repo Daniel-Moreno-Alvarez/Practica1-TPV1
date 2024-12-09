@@ -6,11 +6,13 @@
 #include "Collision.h"
 #include "GameList.h"
 
-class Game;
+class PlayState;
 
 class SceneObject : public GameObject
 {
 protected:
+	PlayState* playST;
+
 	Point2D pos;
 	Point2D vel;
 	int height;
@@ -26,17 +28,18 @@ protected:
 	
 public:
 
-	SceneObject(Game* _game) :
-		GameObject(_game), pos(Point2D()), vel(Point2D()), height(0), width(0)
+	SceneObject(PlayState* _gameST) :
+		GameObject(nullptr), playST(_gameST), pos(Point2D()), vel(Point2D()), height(0), width(0)
 	{};
-	SceneObject(Game* _game, Point2D _pos) :
-		GameObject(_game), pos(_pos), vel(Point2D()), height(0), width(0)
+	SceneObject(PlayState* _gameST, Point2D _pos) :
+		GameObject(nullptr), playST(_gameST), pos(_pos), vel(Point2D()), height(0), width(0)
 	{};
-	SceneObject(Game* _game, Point2D _pos, Point2D _vel, int _h, int _w) :
-		GameObject(_game), pos(_pos), vel(_vel), height(_h), width(_w)
+	SceneObject(PlayState* _gameST, Point2D _pos, Point2D _vel, int _h, int _w) :
+		GameObject(nullptr), playST(_gameST), pos(_pos), vel(_vel), height(_h), width(_w)
 	{};
 	SceneObject(const SceneObject& other) :
-		GameObject(other.game),
+		GameObject(other.gameST),
+		playST(other.playST),
 		pos(other.pos),
 		vel(other.vel),
 		width(other.width),

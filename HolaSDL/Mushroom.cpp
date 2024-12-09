@@ -1,10 +1,11 @@
 #include "Mushroom.h"
 #include "Game.h"
+#include "PlayState.h"
 
-Mushroom::Mushroom(Game* _game, Point2D _pos) : 
-	Pickable(_game, _pos)
+Mushroom::Mushroom(PlayState* _gameST, Point2D _pos) :
+	Pickable(_gameST, _pos)
 {
-	texture = game->getTexture(Game::MUSHROOM);
+	texture = playST->getGame()->getTexture(Game::MUSHROOM);
 	height = BlockTam;
 	width = BlockTam;
 	vel = Point2D(speed, 0);
@@ -31,17 +32,15 @@ void Mushroom::update()
 
 	// Si se sale de la ventana
 	if (pos.getY() > Game::WIN_HEIGHT || 
-		pos.getX() < game->getMapOffset() - BlockTam || 
-		pos.getY() > Game::WIN_HEIGHT || 
-		pos.getX() < game->getMapOffset() - BlockTam) {
+		pos.getX() < playST->getMapOffset() - BlockTam) {
 		delete this;
 	}
 }
 
 void Mushroom::triggerAction()
 {
-	game->addPoints(mushroomPoints);
-	game->setPlayerState(PlayerState::SUPERMARIO_ST);
+	playST->addPoints(mushroomPoints);
+	playST->setPlayerState(PlayerState::SUPERMARIO_ST);
 }
 
 SceneObject* Mushroom::clone() const

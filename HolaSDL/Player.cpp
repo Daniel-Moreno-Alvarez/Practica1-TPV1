@@ -1,18 +1,19 @@
 #include "Player.h"
 #include "Game.h"
+#include "PlayState.h"
 
 constexpr int FRAME_PERIOD = 20;
 
-Player::Player(Game* _game, Point2D _pos, int _lifes) : 
-	SceneObject(_game, _pos, {0,0}, 0, 0),
+Player::Player(PlayState* _gameST, Point2D _pos, int _lifes) : 
+	SceneObject(_gameST, _pos, {0,0}, 0, 0),
 	lifes(_lifes)
 {
 	SetState(MARIO_ST);
 	oripos = pos;
 }
 
-Player::Player(Game* _game, std::istream& is) :
-	SceneObject(_game, {0,0}, {0,0}, 0, 0)
+Player::Player(PlayState* _gameST, std::istream& is) :
+	SceneObject(_gameST, {0,0}, {0,0}, 0, 0)
 {
 	SetState(MARIO_ST);
 	is >> pos >> lifes;
@@ -48,8 +49,8 @@ void Player::update()
 	}
 
 	// Para que no se salga del mapa
-	if (pos.getX() < game->getMapOffset()) {
-		pos.setX(game->getMapOffset());
+	if (pos.getX() < playST->getMapOffset()) {
+		pos.setX(playST->getMapOffset());
 	}
 
 	if ((coll.damages) && !isInmmune) { // comprobar el daño
@@ -102,26 +103,28 @@ void Player::render() const
 
 void Player::handleEvent(const SDL_Event& event)
 {
-	if (event.type == SDL_KEYDOWN) {
-		if (event.key.keysym.sym == SDLK_d) {
-			vel.setX(speed);
-			orientation = SDL_FLIP_NONE;
-		}
-		else if (event.key.keysym.sym == SDLK_a && pos.getX() > game->getMapOffset()) {
-			vel.setX(-speed);
-			orientation = SDL_FLIP_HORIZONTAL;
+	if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) {
+		if (event.type == SDL_KEYDOWN) {
+			if (event.key.keysym.sym == SDLK_d) {
+				vel.setX(speed);
+				orientation = SDL_FLIP_NONE;
+			}
+			else if (event.key.keysym.sym == SDLK_a && pos.getX() > playST->getMapOffset()) {
+				vel.setX(-speed);
+				orientation = SDL_FLIP_HORIZONTAL;
+			}
+			else {
+				vel.setX(0);
+			}
+
+			if (event.key.keysym.sym == SDLK_SPACE && onTheGround) {
+				vel.setY(jump);
+				onTheGround = false;
+			}
 		}
 		else {
 			vel.setX(0);
 		}
-
-		if (event.key.keysym.sym == SDLK_SPACE && onTheGround) {
-			vel.setY(jump);
-			onTheGround = false;
-		}
-	}
-	else {
-		vel.setX(0);
 	}
 }
 
@@ -131,11 +134,11 @@ void Player::SetState(PlayerState pySt)
 	{
 	case MARIO_ST:
 		actualState = MARIO_ST;
-		texture = game->getTexture(Game::MARIO);
+		texture = playST->getGame()->getTexture(Game::MARIO);
 		break;
 	case SUPERMARIO_ST:
 		actualState = SUPERMARIO_ST;
-		texture = game->getTexture(Game::SUPERMARIO);
+		texture = playST->getGame()->getTexture(Game::SUPERMARIO);
 		break;
 	default:
 		break;
@@ -162,5 +165,5 @@ bool Player::isOnTheground()
 {
 	SDL_Rect rect = getCollisionRect();
 	rect.y += 1;
-	return game->checkCollision(rect, Collision::ENEMIES);
+	return playST->checkCollision(rect, Collision::ENEMIES);
 }

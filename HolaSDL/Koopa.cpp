@@ -1,10 +1,11 @@
 #include "Koopa.h"
 #include "Game.h"
+#include "PlayState.h"
 
-Koopa::Koopa(Game* _game, std::istream& is) :
-	Enemy(_game, is)
+Koopa::Koopa(PlayState* _gameST, std::istream& is) :
+	Enemy(_gameST, is)
 {
-	texture = game->getTexture(Game::KOOPA);
+	texture = playST->getGame()->getTexture(Game::KOOPA);
 	height = BlockTam * SCALE;
 	width = BlockTam;
 }

@@ -1,11 +1,11 @@
 #pragma once
 #include "SceneObject.h"
-#include <iostream> 
+#include <iostream>
 
 class Lift : public SceneObject
 {
 public:
-	Lift(Game* _game, std::istream& is);
+	Lift(PlayState* _game, std::istream& is);
 
 	void render() const override;
 	void update() override;

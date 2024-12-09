@@ -1,8 +1,9 @@
 #include "Enemy.h"
 #include "Game.h"
+#include "PlayState.h"
 
-Enemy::Enemy(Game* _game, std::istream& is) :
-	SceneObject(_game)
+Enemy::Enemy(PlayState* _gameST, std::istream& is) :
+	SceneObject(_gameST)
 {
 	is >> pos;
 	pos = pos * BlockTam;
@@ -36,7 +37,8 @@ void Enemy::update()
 		vel.setY(0);
 
 	//actualiza el frame
-	if (game->changeFrame())
+	
+	if (playST->changeFrame())
 	{
 		frame++;
 		if (frame >= frameMax)
@@ -45,7 +47,7 @@ void Enemy::update()
 		}
 	}
 	// Si se sale del mapa por abajo
-	if (pos.getY() > Game::WIN_HEIGHT || pos.getX() < game->getMapOffset() - BlockTam) {
+	if (pos.getY() > Game::WIN_HEIGHT || pos.getX() < playST->getMapOffset() - BlockTam) {
 		delete this;
 	}
 }
@@ -70,7 +72,7 @@ Collision Enemy::hit(const SDL_Rect& rect, Collision::Target target)
 			//Comprobacion de que la collision ha sido desde arriba
 			if (coll.rect.y <= actrect.y && coll.rect.w > BlockTam4 && coll.rect.h < BlockTam4 * 3)
 			{
-				game->addPoints(enemyPoints);
+				playST->addPoints(enemyPoints);
 				coll.isEnemy = true;
 				delete this;
 			}

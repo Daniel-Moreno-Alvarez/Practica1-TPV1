@@ -1,13 +1,14 @@
 #include "Pickable.h"
 #include "Game.h"
+#include "PlayState.h"
 
-Pickable::Pickable(Game* _game, Point2D _pos) : 
-	SceneObject(_game,_pos)
+Pickable::Pickable(PlayState* _gameST, Point2D _pos) :
+	SceneObject(_gameST,_pos)
 {
 }
 
-Pickable::Pickable(Game* _game) : 
-	SceneObject(_game)
+Pickable::Pickable(PlayState* _gameST) :
+	SceneObject(_gameST)
 {
 }
 

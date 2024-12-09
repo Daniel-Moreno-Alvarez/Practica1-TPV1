@@ -1,10 +1,11 @@
 #include "Goomba.h"
 #include "Game.h"
+#include "PlayState.h"
 
-Goomba::Goomba(Game* _game, std::istream& is) : 
-	Enemy(_game, is)
+Goomba::Goomba(PlayState* _gameST, std::istream& is) :
+	Enemy(_gameST, is)
 {
-	texture = game->getTexture(Game::GOOMBA);
+	texture = playST->getGame()->getTexture(Game::GOOMBA);
 	height = BlockTam;
 	width = BlockTam;
 }

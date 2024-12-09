@@ -5,7 +5,7 @@
 #include "Collision.h"
 #include "SceneObject.h"
 
-class Game;
+class GameState;
 
 enum PlayerState {
 	MARIO_ST,
@@ -26,8 +26,8 @@ private:
 	int lastTime = 0;
 	int lifes;
 public:
-	Player(Game* _game, Point2D _pos, int _lifes);
-	Player(Game* _game, std::istream& is);
+	Player(PlayState* _gameST, Point2D _pos, int _lifes);
+	Player(PlayState* _gameST, std::istream& is);
 
 	void update() override;
 	void render() const override;

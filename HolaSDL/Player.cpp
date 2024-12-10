@@ -58,7 +58,6 @@ void Player::update()
 	if ((coll.damages) && !isInmmune) { // comprobar el daño
 		if (actualState == MARIO_ST) {
 			isAlive = false;
-			DieAimation();
 		}
 		else {
 			SetState(MARIO_ST);
@@ -79,6 +78,11 @@ void Player::update()
 			isInmmune = false;
 			lastTime = 0;
 		}
+	}
+
+	if (!isAlive) // animación de muerte
+	{
+		DieAimation();
 	}
 }
 

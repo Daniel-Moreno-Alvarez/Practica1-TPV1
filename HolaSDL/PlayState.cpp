@@ -124,11 +124,10 @@ PlayState::render() const
 {
 	SDL_RenderClear(game->getRenderer());
 
+	tilemap->render();
 	for (auto obj : sceneObjects) {
 		obj->render();
 	}
-
-	tilemap->render();
 	player->render();
 	infoBar->render();
 

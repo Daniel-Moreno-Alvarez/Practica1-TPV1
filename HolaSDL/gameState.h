@@ -17,7 +17,7 @@ public:
 	virtual void render() const = 0;
 	virtual void update() = 0;
 	virtual void handleEvent(const SDL_Event& event);
-	virtual ~GameState();
+	virtual ~GameState() = default;
 	virtual void onEnter() {};
 	Game* getGame() const { return game; };
 protected:

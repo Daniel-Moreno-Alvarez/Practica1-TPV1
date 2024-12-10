@@ -27,7 +27,10 @@ void PauseState::render() const
 void PauseState::startMenu()
 {
     Button* volver = new Button(this, game->getTexture(Game::VOLVERALMENU), { auxposX, volverposY });
-    volver->connect([this]() { game->getGameSTMachine()->popState(); });
+    volver->connect([this]() { 
+        game->getGameSTMachine()->popState();
+        game->getGameSTMachine()->popState();
+        });
     addButton(volver);
 
     Button* continuar = new Button(this, game->getTexture(Game::CONTINUAR), { auxposX, continuarposY });

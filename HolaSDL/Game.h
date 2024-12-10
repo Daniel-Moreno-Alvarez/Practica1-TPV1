@@ -7,6 +7,7 @@
 #include "GameList.h"
 #include "gameState.h"
 #include "PlayState.h"
+#include "MainMenuState.h"
 #include "gameStateMachine.h"
 #include "Texture.h"
 #include "TileMap.h"
@@ -60,6 +61,11 @@ public:
 		COIN,
 		LIFT,
 		NUMBERS,
+		PORTADA,
+		NIVEL1,
+		NIVEL2,
+		SALIR,
+		CONTINUAR,
 		NUM_TEXTURES,  // Truco C++: número de texturas definidas
 	};
 
@@ -74,9 +80,6 @@ private:
 	bool seguir;
 
 	// Estados del juego
-	GameState* currentState = nullptr;
-	PlayState* playState;
-
 	GameStateMachine* stateMachine;
 
 public:
@@ -95,6 +98,7 @@ public:
 	Texture* getTexture(TextureName name) const;
 
 	GameStateMachine* getGameSTMachine() const { return stateMachine; };
+	void endGame() { seguir = false; };
 
 	Game();
 	~Game();

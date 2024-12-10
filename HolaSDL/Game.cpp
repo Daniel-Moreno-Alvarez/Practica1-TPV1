@@ -33,6 +33,11 @@ const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
 	{"coin.png", 4, 1},
 	{"lift.png", 1, 1},
 	{"numbers.png", 10, 1},
+	{"portada.png", 1, 1},
+	{"nivel1.png", 1, 1},
+	{"nivel2.png", 1, 1},
+	{"salir.png", 1, 1},
+	{"continuar.png", 1, 1},
 };
 
 Game::Game()
@@ -77,8 +82,7 @@ Game::Game()
 	}
 
 	stateMachine = new GameStateMachine();
-	playState = new PlayState(this);
-	stateMachine->pushState(playState);
+	stateMachine->pushState(new MainMenuState(this));
 }
 
 Game::~Game()

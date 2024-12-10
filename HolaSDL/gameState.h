@@ -17,12 +17,12 @@ public:
 	virtual void render() const = 0;
 	virtual void update() = 0;
 	virtual void handleEvent(const SDL_Event& event);
-	virtual ~GameState() = default;
+	virtual ~GameState();
 	virtual void onEnter() {};
 	Game* getGame() const { return game; };
 protected:
 	Game* game;
-	GameList<GameObject*> gameObjects;
+	GameList<GameObject> gameObjects;
 	std::list<EventHandler*> eventHandlers;
 };
 

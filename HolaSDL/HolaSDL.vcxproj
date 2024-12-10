@@ -71,6 +71,7 @@
   <ItemGroup>
     <ClCompile Include="AnimationState.cpp" />
     <ClCompile Include="Block.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EventHandler.cpp" />
@@ -84,6 +85,7 @@
     <ClCompile Include="Koopa.cpp" />
     <ClCompile Include="Lift.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="Mushroom.cpp" />
     <ClCompile Include="Pickable.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -97,6 +99,7 @@
   <ItemGroup>
     <ClInclude Include="AnimationState.h" />
     <ClInclude Include="Block.h" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="checkML.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="Collision.h" />
@@ -114,6 +117,7 @@
     <ClInclude Include="InfoBar.h" />
     <ClInclude Include="Koopa.h" />
     <ClInclude Include="Lift.h" />
+    <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="Mushroom.h" />
     <ClInclude Include="Pickable.h" />
     <ClInclude Include="Player.h" />

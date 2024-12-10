@@ -4,6 +4,7 @@
 #include <iostream> 
 #include "Collision.h"
 #include "SceneObject.h"
+#include "EventHandler.h"
 
 class GameState;
 
@@ -12,7 +13,7 @@ enum PlayerState {
 	SUPERMARIO_ST,
 };
 
-class Player : public SceneObject
+class Player : public SceneObject, public EventHandler
 {
 private:
 	const float speed = 8;

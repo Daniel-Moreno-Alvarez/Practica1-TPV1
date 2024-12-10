@@ -22,7 +22,7 @@ class PlayState : public GameState
 {
 protected:
 	// Interruptor para terminar el juego
-	bool seguir;
+	bool seguir = true;
 	//offset del mapa
 	int mapOffset = 0;
 	// Objetos del juego
@@ -46,7 +46,10 @@ public:
 	PlayState(Game* _game) : GameState(_game) {
 		startObjects();
 	};
-
+	PlayState(Game* _game, int _level) : GameState(_game), level(_level) {
+		startObjects();
+	};
+	~PlayState();
 	void startObjects();
 	void deleteObjects();
 

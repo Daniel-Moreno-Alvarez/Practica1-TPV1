@@ -1,6 +1,11 @@
 #include "PlayState.h"
 #include "Game.h"
 
+PlayState::~PlayState()
+{
+	deleteObjects();
+}
+
 void PlayState::startObjects()
 {
 	// Crea los objetos del juego
@@ -174,6 +179,11 @@ PlayState::update()
 	if (player->getPosition().getX() >= mapOffset - BlockTam + Game::WIN_WIDTH / 2) {
 
 		mapOffset += 8;
+	}
+
+	if (!seguir)
+	{
+		game->getGameSTMachine()->popState();
 	}
 
 	updatescounter++;

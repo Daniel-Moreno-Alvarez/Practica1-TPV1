@@ -60,6 +60,9 @@ void Enemy::render() const
 
 Collision Enemy::hit(const SDL_Rect& rect, Collision::Target target)
 {
+	if (target == Collision::ENEMIES && playST->getPlayer()->IsInmmune()) {
+		return NO_COLLISION;
+	}
 	if (target == Collision::PLAYER) {
 		return NO_COLLISION;
 	}

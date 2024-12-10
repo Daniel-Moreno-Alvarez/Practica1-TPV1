@@ -76,6 +76,7 @@ Collision TileMap::hit(const SDL_Rect& rect, Collision::Target target) {
                         coll.collides = true;
                         coll.horizontal = intersection.w;
                         coll.vertical = intersection.h;
+                        coll.result = Collision::OBSTACLE;
                         return coll;
                     }
                 }

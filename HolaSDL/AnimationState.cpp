@@ -1,8 +1,8 @@
 #include "AnimationState.h"
 #include "Game.h"
 
-AnimationState::AnimationState(Game* _game, PlayState* _playState, std::function<bool()> _animationFunc) :
-	GameState(_game), playState(_playState), animationFunc(_animationFunc)
+AnimationState::AnimationState(Game* _game, GameState* _gameState, std::function<bool()> _animationFunc) :
+	GameState(_game), gameState(_gameState), animationFunc(_animationFunc)
 {
 }
 
@@ -16,5 +16,5 @@ void AnimationState::update()
 
 void AnimationState::render() const
 {
-	playState->render();
+	gameState->render();
 }

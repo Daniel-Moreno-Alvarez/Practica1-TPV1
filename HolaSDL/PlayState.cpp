@@ -1,5 +1,6 @@
 #include "PlayState.h"
 #include "Game.h"
+#include "PauseState.h"
 
 PlayState::~PlayState()
 {
@@ -123,20 +124,27 @@ PlayState::render() const
 {
 	SDL_RenderClear(game->getRenderer());
 
-	tilemap->render();
-	player->render();
-	infoBar->render();
-
 	for (auto obj : sceneObjects) {
 		obj->render();
 	}
+
+	tilemap->render();
+	player->render();
+	infoBar->render();
 
 	SDL_RenderPresent(game->getRenderer());
 }
 
 void PlayState::handleEvent(const SDL_Event& event)
 {
-	player->handleEvent(event);
+	if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_p)
+	{
+		PauseState* pause = new PauseState(game, this);
+		game->getGameSTMachine()->pushState(pause);
+	}
+	else {
+		player->handleEvent(event);
+	}
 }
 
 void

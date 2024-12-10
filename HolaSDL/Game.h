@@ -66,6 +66,7 @@ public:
 		NIVEL2,
 		SALIR,
 		CONTINUAR,
+		VOLVERALMENU,
 		NUM_TEXTURES,  // Truco C++: número de texturas definidas
 	};
 

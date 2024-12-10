@@ -38,6 +38,7 @@ const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
 	{"nivel2.png", 1, 1},
 	{"salir.png", 1, 1},
 	{"continuar.png", 1, 1},
+	{"volverAlMenu.png", 1, 1},
 };
 
 Game::Game()

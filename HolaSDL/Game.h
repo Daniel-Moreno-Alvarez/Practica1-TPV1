@@ -7,6 +7,7 @@
 #include "GameList.h"
 #include "gameState.h"
 #include "PlayState.h"
+#include "gameStateMachine.h"
 #include "Texture.h"
 #include "TileMap.h"
 #include "Player.h"
@@ -76,6 +77,8 @@ private:
 	GameState* currentState = nullptr;
 	PlayState* playState;
 
+	GameStateMachine* stateMachine;
+
 public:
 	void run();
 
@@ -90,6 +93,8 @@ public:
 
 	// Geters
 	Texture* getTexture(TextureName name) const;
+
+	GameStateMachine* getGameSTMachine() const { return stateMachine; };
 
 	Game();
 	~Game();

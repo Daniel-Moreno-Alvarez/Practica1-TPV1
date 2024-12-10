@@ -64,7 +64,7 @@ public:
 
 	Player* getPlayer() const { return player; };
 
-	bool changeFrame() const { return updatescounter == 0; };
+	int getFrames() const { return updatescounter; };
 
 	// Seters
 	void setPlayerState(PlayerState pySt) { player->SetState(pySt); };

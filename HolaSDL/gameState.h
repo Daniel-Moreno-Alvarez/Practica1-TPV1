@@ -3,6 +3,7 @@
 #include <list>
 #include "GameObject.h"
 #include "EventHandler.h"
+#include "GameList.h"
 
 class Game;
 
@@ -11,10 +12,9 @@ public:
 	GameState(Game* _game) : game(_game){};
 	GameState(const GameState& other) :
 		game(other.game),
-		gameObjects(other.gameObjects),
 		eventHandlers(other.eventHandlers)
 	{};
-	virtual void render() const;
+	virtual void render() const = 0;
 	virtual void update() = 0;
 	virtual void handleEvent(const SDL_Event& event);
 	virtual ~GameState() = default;
@@ -22,7 +22,7 @@ public:
 	Game* getGame() const { return game; };
 protected:
 	Game* game;
-	std::list<GameObject*> gameObjects;
+	GameList<GameObject*> gameObjects;
 	std::list<EventHandler*> eventHandlers;
 };
 

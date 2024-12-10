@@ -177,10 +177,6 @@ PlayState::update()
 	}
 
 	updatescounter++;
-	if (updatescounter >= ANIM_RANGE)
-	{
-		updatescounter = 0;
-	}
 }
 
 void PlayState::resetLevel()

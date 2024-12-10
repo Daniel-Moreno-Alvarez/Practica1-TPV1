@@ -42,4 +42,5 @@ public:
 	bool IsInmmune() const { return isInmmune; };
 
 	bool isOnTheground();
+	void DieAimation();
 };

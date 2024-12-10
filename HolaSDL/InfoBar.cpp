@@ -10,7 +10,7 @@ InfoBar::InfoBar(GameState* _gameST) : GameObject(_gameST)
 void InfoBar::render() const
 {
 	// vidas
-	/*for (int i = 0; i < gameST->getPlayer()->getLifes(); i++)
+	/*for (int i = 0; i < playST->getPlayer()->getLifes(); i++)
 	{
 		SDL_Rect rect = { offset + (tam + offset) * i, offset, tam,tam };
 		gameST->getGame()->getTexture(Game::MARIO)->renderFrame(rect, 0, 0);

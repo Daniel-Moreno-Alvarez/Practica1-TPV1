@@ -16,4 +16,5 @@ public:
 	void update() override {};
 
 	void setPoints(int _p) { points += _p; };
+	void resetPoints() { points = 0; };
 };

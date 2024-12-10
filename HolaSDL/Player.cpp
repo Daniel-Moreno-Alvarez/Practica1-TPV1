@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "Game.h"
 #include "PlayState.h"
+#include "AnimationState.h"
 
 constexpr int FRAME_PERIOD = 20;
 
@@ -56,6 +57,7 @@ void Player::update()
 	if ((coll.damages) && !isInmmune) { // comprobar el daño
 		if (actualState == MARIO_ST) {
 			isAlive = false;
+			DieAimation();
 		}
 		else {
 			SetState(MARIO_ST);
@@ -99,6 +101,26 @@ void Player::render() const
 			texture->renderFrame(rect, 0, 2 + x % 3, orientation);
 		}
 	}
+}
+
+void Player::DieAimation()
+{
+	vel.setY(jump);
+
+	auto dieAnimation = [this]() -> bool {
+
+		vel.setY(vel.getY() + gravity.getY());
+		pos.setY(pos.getY() + vel.getY());
+
+		if (pos.getY() > Game::WIN_HEIGHT) {
+			return false;
+		}
+
+		return true;
+	};
+
+	AnimationState* anim = new AnimationState(playST->getGame(), playST, dieAnimation);
+	playST->getGame()->getGameSTMachine()->pushState(anim);
 }
 
 void Player::handleEvent(const SDL_Event& event)

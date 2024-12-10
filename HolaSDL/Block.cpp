@@ -71,14 +71,7 @@ void Block::update()
 {
 	// Actualiza el frame para surprise
 	if (tipe == SURPRISE) {
-		if (playST->changeFrame())
-		{
-			frame++;
-			if (frame >= frameMax)
-			{
-				frame = 0;
-			}
-		}
+		frame = (playST->getFrames() / ANIM_RANGE) % frameMax;
 	}
 }
 

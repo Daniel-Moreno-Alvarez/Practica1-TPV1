@@ -76,12 +76,15 @@ Game::Game()
 		}
 	}
 
+	stateMachine = new GameStateMachine();
 	playState = new PlayState(this);
-	currentState = playState;
+	stateMachine->pushState(playState);
 }
 
 Game::~Game()
 {
+	delete stateMachine;
+
 	// Elimina las texturas
 	for (Texture* texture : textures) {
 		delete texture;
@@ -119,7 +122,7 @@ Game::render()
 {
 	SDL_RenderClear(renderer);
 
-	currentState->render();
+	stateMachine->render();
 
 	SDL_RenderPresent(renderer);
 }
@@ -127,7 +130,7 @@ Game::render()
 void
 Game::update()
 {
-	currentState->update();
+	stateMachine->update();
 }
 
 void
@@ -137,8 +140,9 @@ Game::handleEvents()
 	SDL_Event evento;
 
 	while (SDL_PollEvent(&evento)) {
-		if (evento.type == SDL_QUIT)
+		if (evento.type == SDL_QUIT) {
 			seguir = false;
-		currentState->handleEvent(evento);
+		}
+		stateMachine->handleEvent(evento);
 	}
 } 

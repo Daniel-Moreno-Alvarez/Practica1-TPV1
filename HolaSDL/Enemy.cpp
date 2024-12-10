@@ -37,8 +37,7 @@ void Enemy::update()
 		vel.setY(0);
 
 	//actualiza el frame
-	
-	if (playST->changeFrame())
+	if (playST->getFrames() % ANIM_RANGE == 0)
 	{
 		frame++;
 		if (frame >= frameMax)
@@ -60,10 +59,10 @@ void Enemy::render() const
 
 Collision Enemy::hit(const SDL_Rect& rect, Collision::Target target)
 {
-	if (target == Collision::ENEMIES && playST->getPlayer()->IsInmmune()) {
+	if (target == Collision::ENEMIES && playST->getPlayer()->IsInmmune() ) {
 		return NO_COLLISION;
 	}
-	if (target == Collision::PLAYER) {
+	if (target == Collision::PLAYER || !playST->getPlayer()->IsAlive()) {
 		return NO_COLLISION;
 	}
 	Collision coll;

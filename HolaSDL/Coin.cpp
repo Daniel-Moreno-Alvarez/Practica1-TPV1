@@ -14,14 +14,7 @@ Coin::Coin(PlayState* _gameST, std::istream& is) :
 
 void Coin::update()
 {
-	if (playST->changeFrame())
-	{
-		frame++;
-		if (frame >= frameMax)
-		{
-			frame = 0;
-		}
-	}
+	frame = (playST->getFrames() / ANIM_RANGE) % frameMax;
 }
 
 void Coin::triggerAction()

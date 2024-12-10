@@ -14,7 +14,7 @@ protected:
 	float speed = 2;
 	int frame = 0;
 	int frameTime = 0;
-	float frameMax = 2;
+	int frameMax = 2;
 public:
 	Enemy(PlayState* _gameST, std::istream& is);
 

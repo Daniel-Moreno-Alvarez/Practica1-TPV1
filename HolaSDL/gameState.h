@@ -4,7 +4,7 @@
 #include "GameObject.h"
 #include "EventHandler.h"
 #include "GameList.h"
-
+#include "Button.h"
 class Game;
 
 class GameState {
@@ -20,6 +20,7 @@ public:
 	virtual ~GameState() = default;
 	virtual void onEnter() {};
 	Game* getGame() const { return game; };
+	void addButton(Button* _button);
 protected:
 	Game* game;
 	GameList<GameObject> gameObjects;

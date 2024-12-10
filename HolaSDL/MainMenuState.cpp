@@ -40,12 +40,6 @@ void MainMenuState::startMenu()
     addButton(salir);
 }
 
-void MainMenuState::addButton(Button* _button)
-{
-    gameObjects.push_back(_button);
-    eventHandlers.push_back(_button);
-}
-
 void MainMenuState::loadLevel(int level)
 {
     GameState* playS = new PlayState(game, level);

@@ -14,8 +14,7 @@ private:
 	float auxposX = 0;
 	const float nivel1posY = 280;
 	const float nivel2posY = 330;
-	const float salirposY = 430;
+	const float salirposY = 380;
 	void startMenu();
-	void addButton(Button* _button);
 	void loadLevel(int n);
 };

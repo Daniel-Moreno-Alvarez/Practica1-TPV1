@@ -41,9 +41,3 @@ void PauseState::startMenu()
     salir->connect([this]() { game->endGame(); });
     addButton(salir);
 }
-
-void PauseState::addButton(Button* _button)
-{
-    gameObjects.push_back(_button);
-    eventHandlers.push_back(_button);
-}

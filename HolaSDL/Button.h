@@ -39,4 +39,6 @@ private:
 	SDL_Point mouse; // ubicación del ratón
 
 	void emit() const;
+
+	SDL_Color yellow = {255, 255, 0, 255};
 };

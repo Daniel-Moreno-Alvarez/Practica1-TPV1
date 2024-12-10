@@ -1,6 +1,7 @@
 #include "PlayState.h"
 #include "Game.h"
 #include "PauseState.h"
+#include "EndState.h"
 
 PlayState::~PlayState()
 {
@@ -119,6 +120,12 @@ void PlayState::addPoints(int _p)
 	infoBar->setPoints(_p);
 }
 
+void PlayState::final(bool win)
+{
+	EndState* end = new EndState(game, win);
+	game->getGameSTMachine()->pushState(end);
+}
+
 void
 PlayState::render() const
 {
@@ -165,7 +172,7 @@ PlayState::update()
 
 	if (player->getPosition().getX() >= finalX) { // si llega al final
 		if (level >= finalLevel) {
-			seguir = false;
+			final(true);
 		}
 		else {
 			nextLevel();
@@ -179,7 +186,7 @@ PlayState::update()
 			resetLevel();
 		}
 		else {
-			seguir = false;
+			final(false);
 		}
 	}
 

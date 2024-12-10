@@ -61,6 +61,7 @@ public:
 	void addMushroom(Point2D _pos);
 	void addPoints(int _p);
 
+	void final(bool win);
 	// Geters
 	int getMapOffset() const { return mapOffset; };
 	PlayerState getPlayerState() { return player->getState(); };

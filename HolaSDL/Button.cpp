@@ -34,8 +34,9 @@ void Button::render() const
 	if (buttonST == OVER)
 	{
 		mushTexture->render(mushRect);
+		texture->render(rect, yellow);
 	}
-	texture->render(rect);
+	else texture->render(rect);
 }
 
 void Button::update()

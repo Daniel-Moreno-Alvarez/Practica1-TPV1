@@ -9,7 +9,7 @@ struct TextureSpec
 {
 	const char* name;	// Ruta del archivo
 	uint numColumns;	// Número de frames por fila
-	uint numRows;		// Número de frames por columna
+	uint numRows;	// Número de frames por columna
 };
 
 // Directorio raíz de los archivos de textura
@@ -39,6 +39,8 @@ const array<TextureSpec, Game::NUM_TEXTURES> textureSpec{
 	{"salir.png", 1, 1},
 	{"continuar.png", 1, 1},
 	{"volverAlMenu.png", 1, 1},
+	{"gameOver.png", 1, 1},
+	{"hasGanado.png", 1, 1},
 };
 
 Game::Game()

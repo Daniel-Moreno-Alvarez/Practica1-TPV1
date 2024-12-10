@@ -67,6 +67,8 @@ public:
 		SALIR,
 		CONTINUAR,
 		VOLVERALMENU,
+		GAMEOVER,
+		GAMEWIN,
 		NUM_TEXTURES,  // Truco C++: número de texturas definidas
 	};
 

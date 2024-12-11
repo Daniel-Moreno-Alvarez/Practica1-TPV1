@@ -1,4 +1,11 @@
 Daniel Moreno Álvarez
 
-Todos los requisitos de entrega completados. 
-Añadido la clase InfoBar.
+Todos los requisitos de entrega completados.
+He arreglado algunos errores de la practica 2:
+- Los bloques y monedas tienen animación simultanea
+- El estado inmune funciona correctamente y no detecta colisión con los enemigos
+
+Algunas aclaraciones:
+- He utilizado otro atributo playState en los SceneObjects para manejarlos mejor sin utilizar casteo.
+- No destruyo los la lista de gameObjects ni la de eventHandlers en el GameState porque da problemas 
+cuando hago el pop de algunos estaos. Podría ser por alguna dependencia pero no estoy seguro.

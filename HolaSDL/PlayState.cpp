@@ -210,6 +210,7 @@ void PlayState::resetLevel()
 	}
 	mapOffset = 0;
 	nextObject = 0;
+	infoBar->resetPoints();
 	player->restart();
 }
 

@@ -15,6 +15,8 @@ EndState::EndState(Game* _game, bool _win) :
     rect.h = texture->getFrameHeight();
     rect.x = auxposX - rect.w / 2;
     rect.y = tituloposY - rect.h / 2;
+
+    SDL_SetRenderDrawColor(game->getRenderer(), 0, 0, 0, 255);
     startMenu();
 }
 

@@ -4,7 +4,7 @@
 #include "EventHandler.h"
 #include "Texture.h"
 #include "Vector2D.h"
-#include "GameState.h"
+#include "gameState.h"
 
 using Callback = std::function<void(void)>;
 

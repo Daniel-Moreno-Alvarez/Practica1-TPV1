@@ -1,20 +1,20 @@
 #include "InfoBar.h"
 #include "Game.h"
-#include "GameState.h"
+#include "PlayState.h"
 
-InfoBar::InfoBar(GameState* _gameST) : GameObject(_gameST)
+InfoBar::InfoBar(PlayState* _playST) : GameObject(nullptr), playST(_playST)
 { 
-	numeros = gameST->getGame()->getTexture(Game::NUMBERS);
+	numeros = playST->getGame()->getTexture(Game::NUMBERS);
 }
 
 void InfoBar::render() const
 {
 	// vidas
-	/*for (int i = 0; i < playST->getPlayer()->getLifes(); i++)
+	for (int i = 0; i < playST->getPlayer()->getLifes(); i++)
 	{
 		SDL_Rect rect = { offset + (tam + offset) * i, offset, tam,tam };
-		gameST->getGame()->getTexture(Game::MARIO)->renderFrame(rect, 0, 0);
-	}*/
+		playST->getGame()->getTexture(Game::MARIO)->renderFrame(rect, 0, 0);
+	}
 	// puntos
 	if (points == 0) {
 		SDL_Rect rect = { Game::WIN_WIDTH - (tam + offset), offset, tam, tam };

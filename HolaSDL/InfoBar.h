@@ -2,6 +2,8 @@
 #include "GameObject.h"
 #include "Texture.h"
 
+class PlayState;
+
 class InfoBar : public GameObject
 {
 private:
@@ -9,9 +11,9 @@ private:
 	int tam = 20;
 	int offset = 5;
 	int points = 0;
+	PlayState* playST;
 public:
-	InfoBar(GameState* _game);
-
+	InfoBar(PlayState* _playST);
 	void render() const override;
 	void update() override {};
 
